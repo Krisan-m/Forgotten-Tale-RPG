@@ -2,11 +2,13 @@
 #include "TextureManager.h"
 #include "Map.h"
 #include "ECS/Components.h"
+#include "Vector2D.h"
 
 Map* map;
 Manager manager;
 
 SDL_Renderer* Game::renderer = nullptr;
+SDL_Event Game::event;
 
 auto& player(manager.addEntity());
 
@@ -40,14 +42,13 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	//ecs implementation
 
-	player.addComponent<PositionComponent>();
+	player.addComponent<TransformComponent>();
 	player.addComponent<SpriteComponent>("assets/player.png");
+	player.addComponent<KeyboardController>();
 }
 
 void Game::handleEvents()
 {
-	SDL_Event event;
-
 	SDL_PollEvent(&event);
 
 	switch (event.type)
@@ -64,11 +65,6 @@ void Game::update()
 {
 	manager.refresh();
 	manager.update();
-
-	if (player.getComponent<PositionComponent>().x() > 100)
-	{
-		player.getComponent<SpriteComponent>().setText("assets/enemy.png");
-	}
 
 }
 
