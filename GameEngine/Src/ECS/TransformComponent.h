@@ -10,8 +10,8 @@ public:
 	Vector2D position;
 	Vector2D velocity;
 
-	int height = 32;
-	int width = 32;
+	int height = 16;
+	int width = 16;
 	int scale = 1;
 	
 	int speed = 3;
@@ -24,7 +24,8 @@ public:
 
 	TransformComponent(int sc)
 	{
-		position.Zero();
+		position.x = 400;
+		position.y = 320;
 		scale = sc;
 	}
 

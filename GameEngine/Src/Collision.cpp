@@ -11,6 +11,7 @@ bool Collision::AABB(const SDL_Rect& recA, const SDL_Rect& recB)
 		recB.y + recB.h >= recA.y
 		)
 	{
+		std::cout << "hit" << std::endl;
 		return true;
 	}
 
@@ -21,7 +22,6 @@ bool Collision::AABB(const ColliderComponent& colA, const ColliderComponent& col
 {
 	if (AABB(colA.collider, colB.collider))
 	{
-		std::cout << colA.tag << "hit: " << colB.tag << std::endl;
 		return true;
 	}
 	else
