@@ -45,11 +45,11 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		isRunning = true;
 	}
 
-	map = new Map("assets/cave_1_ss.png", 2, 16);
+	map = new Map("assets/cave_1_ss.png", 3, 16);
 	map->LoadMap("assets/cave_1.map", 50, 40);
 
 
-	player.addComponent<TransformComponent>(400, 700, 31, 19, 4);
+	player.addComponent<TransformComponent>(1200, 300, 31, 19, 3);
 	player.addComponent<SpriteComponent>("assets/character_spritesheet.png", true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
@@ -120,7 +120,7 @@ void Game::render()
 	}
 	for (auto& c : colliders)
 	{
-		c->draw();
+		//c->draw();
 	}
 	for (auto& p : players)
 	{
