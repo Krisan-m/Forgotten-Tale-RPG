@@ -10,8 +10,10 @@ Manager manager;
 
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
-
-SDL_Rect Game::camera = {0, 0, 800, 640}; //width and height of map
+int screenX = 800;
+int screenY = 640;
+int scale = 3;
+SDL_Rect Game::camera = {0, 0, screenX * scale, screenY * scale}; //width and height of map
 
 bool Game::isRunning = false;
 
@@ -45,11 +47,11 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		isRunning = true;
 	}
 
-	map = new Map("assets/cave_1_ss.png", 3, 16);
+	map = new Map("assets/cave_1_ss.png", scale, 16);
 	map->LoadMap("assets/cave_1.map", 50, 40);
 
 
-	player.addComponent<TransformComponent>(1200, 300, 31, 19, 3);
+	player.addComponent<TransformComponent>(camera.w/2, camera.h/2, 31, 19, scale);
 	player.addComponent<SpriteComponent>("assets/character_spritesheet.png", true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
@@ -95,18 +97,19 @@ void Game::update()
 		}
 	}
 
-	camera.x = player.getComponent<TransformComponent>().position.x - 400; //take away half of screen to keep player in middle
-	camera.y = player.getComponent<TransformComponent>().position.y - 320;
+	//take away half of screen to keep player in middle
+	camera.x = player.getComponent<TransformComponent>().position.x - (screenX/2);
+	camera.y = player.getComponent<TransformComponent>().position.y - (screenY/2);
 
 	//check bounds to avoid showing null map
 	if (camera.x < 0)
 		camera.x = 0;
 	if (camera.y < 0)
 		camera.y = 0;
-	if (camera.x > camera.w)
-		camera.x = camera.w;
-	if (camera.y > camera.h)
-		camera.y = camera.h;
+	if (camera.x > camera.w - screenX)
+		camera.x = camera.w - screenX;
+	if (camera.y > camera.h - screenY)
+		camera.y = camera.h - screenY;	
 }
 
 

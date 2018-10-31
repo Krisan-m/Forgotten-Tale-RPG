@@ -84,6 +84,8 @@ public:
 
 		destRect.x = static_cast<int>(transform->position.x) - Game::camera.x;
 		destRect.y = static_cast<int>(transform->position.y) - Game::camera.y;
+		//std::cout << "destRect.x" << destRect.x << std::endl;
+		//std::cout << "destRect.y" << destRect.y << std::endl;
 		destRect.w = transform->width * transform->scale;
 		destRect.h = transform->height * transform->scale;
 	}
