@@ -30,7 +30,8 @@ public:
 	{
 		groupMap,
 		groupPlayers,
-		groupColliders
+		groupTerrainColliders,
+		groupPortalColliders
 	};
 
 private:

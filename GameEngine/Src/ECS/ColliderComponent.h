@@ -37,7 +37,11 @@ public:
 		}
 		transform = &entity->getComponent<TransformComponent>();
 
-		tex = TextureManager::LoadTexture("assets/coltex.png");
+		if (tag == "terrain")
+			tex = TextureManager::LoadTexture("assets/coltex.png");
+		else
+			tex = TextureManager::LoadTexture("assets/portaltex.png");
+
 		srcR = { 0, 0, 16, 16 };
 		destR = { collider.x, collider.y, collider.w, collider.h };
 
@@ -45,7 +49,7 @@ public:
 
 	void update() override
 	{
-		if (tag != "terrain")
+		if (tag != "terrain" && tag != "portal")
 		{
 			collider.x = static_cast<int>(transform->position.x);
 			collider.y = static_cast<int>(transform->position.y);

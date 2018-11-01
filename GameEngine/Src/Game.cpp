@@ -63,7 +63,8 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
-auto& colliders(manager.getGroup(Game::groupColliders));
+auto& terrainColliders(manager.getGroup(Game::groupTerrainColliders));
+auto& portalColliders(manager.getGroup(Game::groupPortalColliders));
 
 void Game::handleEvents()
 {
@@ -88,7 +89,7 @@ void Game::update()
 	manager.refresh();
 	manager.update();
 
-	for (auto& c : colliders)
+	for (auto& c : terrainColliders)
 	{
 		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
 		if (Collision::AABB(cCol, playerCol))
@@ -121,9 +122,13 @@ void Game::render()
 	{
 		t->draw();
 	}
-	for (auto& c : colliders)
+	for (auto& c : terrainColliders)
 	{
-		//c->draw();
+		c->draw();
+	}
+	for (auto& pc : portalColliders)
+	{
+		pc->draw();
 	}
 	for (auto& p : players)
 	{

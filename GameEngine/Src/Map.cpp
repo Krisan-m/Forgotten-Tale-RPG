@@ -47,9 +47,17 @@ void Map::LoadMap(std::string path, int sizeX, int sizeY)
 			mapFile.get(c);
 			if (c == '1')
 			{
+				//add terrain tile
 				auto& tcol(manager.addEntity());
 				tcol.addComponent<ColliderComponent>("terrain", x * scaledSize, y * scaledSize, scaledSize);
-				tcol.addGroup(Game::groupColliders);
+				tcol.addGroup(Game::groupTerrainColliders);
+			}
+			if (c == '2')
+			{
+				//add portal tile
+				auto& tportal(manager.addEntity());
+				tportal.addComponent<ColliderComponent>("portal", x * scaledSize, y * scaledSize, scaledSize);
+				tportal.addGroup(Game::groupPortalColliders);
 			}
 			mapFile.ignore();
 		}
