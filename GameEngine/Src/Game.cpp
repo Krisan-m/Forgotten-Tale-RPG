@@ -80,23 +80,31 @@ void Game::handleEvents()
 	}
 }
 
+Vector2D lastPlayerPos;
+
 void Game::update()
 {
 
 	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
 	Vector2D playerPos = player.getComponent<TransformComponent>().position;
+	Vector2D playerVel = player.getComponent<TransformComponent>().velocity;
 
 	manager.refresh();
 	manager.update();
 
+	//check if player has collision with any of the colliders on the map
+	bool wasCollision = false;
 	for (auto& c : terrainColliders)
 	{
 		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
 		if (Collision::AABB(cCol, playerCol))
 		{
-			player.getComponent<TransformComponent>().position = playerPos;
+			// set player to last position that isn't colliding with anything
+			player.getComponent<TransformComponent>().position = lastPlayerPos;
+			wasCollision = true;
 		}
 	}
+	if (!wasCollision) lastPlayerPos = playerPos;
 
 	//take away half of screen to keep player in middle
 	camera.x = player.getComponent<TransformComponent>().position.x - (screenX/2);
