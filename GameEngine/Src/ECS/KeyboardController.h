@@ -25,20 +25,24 @@ public:
 			{
 			case SDLK_w:
 				transform->velocity.y = -1;
+				transform->velocity.x = 0;
 				sprite->Play("Walk Up");
 				break;
 			case SDLK_a:
 				transform->velocity.x = -1;
+				transform->velocity.y = 0;
 				sprite->Play("Walk Left");
 				sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
 				break;
 			case SDLK_d:
 				transform->velocity.x = 1;
+				transform->velocity.y = 0;
 				sprite->Play("Walk Left");
 				sprite->spriteFlip = SDL_FLIP_NONE;
 				break;
 			case SDLK_s:
 				transform->velocity.y = 1;
+				transform->velocity.x = 0;
 				sprite->Play("Walk Down");
 				break;
 			default:
@@ -52,20 +56,22 @@ public:
 			{
 			case SDLK_w:
 				transform->velocity.y = 0;
-				sprite->Play("Idle Back");
+				if(transform->velocity.x == 0) sprite->Play("Idle Back");
 				break;
 			case SDLK_a:
 				transform->velocity.x = 0;
-				sprite->Play("Idle Side");
-				sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
+				if (transform->velocity.y == 0) {
+					sprite->Play("Idle Side");
+					sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
+				}
 				break;
 			case SDLK_d:
 				transform->velocity.x = 0;
-				sprite->Play("Idle Side");
+				if (transform->velocity.y == 0) sprite->Play("Idle Side");
 				break;
 			case SDLK_s:
 				transform->velocity.y = 0;
-				sprite->Play("Idle Front");
+				if (transform->velocity.x == 0) sprite->Play("Idle Front");
 				break;
 			case SDLK_F4:
 				Game::isRunning = false;
