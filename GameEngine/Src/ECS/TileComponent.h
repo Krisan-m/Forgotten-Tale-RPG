@@ -1,7 +1,9 @@
 #pragma once
 
 #include "ECS.h"
-#include "SDL.h"
+#include "../Vector2D.h"
+#include "../Game.h"
+#include "../TextureManager.h"
 
 class TileComponent : public Component
 {
@@ -20,12 +22,12 @@ public:
 	}
 
 	
-	TileComponent(int srcX, int srcY, int xpos, int ypos, int tsize, int tscale, const char* path)
+	TileComponent(int srcX, int srcY, int xpos, int ypos, int tsize, int tscale, std::string id)
 	{
-		texture = TextureManager::LoadTexture(path);
+		texture = Game::assets->GetTexture(id);
 		
-		position.x = xpos;
-		position.y = ypos;
+		position.x = static_cast<float>(xpos);
+		position.y = static_cast<float>(ypos);
 
 		srcRect.x = srcX;
 		srcRect.y = srcY;
@@ -38,8 +40,8 @@ public:
 
 	void update() override
 	{
-		destRect.x = position.x - Game::camera.x;
-		destRect.y = position.y - Game::camera.y;
+		destRect.x = static_cast<int>(position.x - Game::camera.x);
+		destRect.y = static_cast<int>(position.y - Game::camera.y);
 	}
 
 	void draw() override

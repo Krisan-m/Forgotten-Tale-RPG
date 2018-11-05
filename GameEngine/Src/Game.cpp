@@ -4,6 +4,8 @@
 #include "ECS/Components.h"
 #include "Vector2D.h"
 #include "Collision.h"
+#include "AssetManager.h"
+#include <sstream>
 
 Map* map;
 Manager manager;
@@ -15,9 +17,12 @@ int screenY = 640;
 int scale = 3;
 SDL_Rect Game::camera = {0, 0, screenX * scale, screenY * scale}; //width and height of map
 
+AssetManager* Game::assets = new AssetManager(&manager);
+
 bool Game::isRunning = false;
 
 auto& player(manager.addEntity());
+auto& label(manager.addEntity());
 
 
 Game::Game()
@@ -47,15 +52,28 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		isRunning = true;
 	}
 
-	map = new Map("assets/cave_1_ss.png", scale, 16);
+	if (TTF_Init() == -1)
+	{
+		std::cout << "FAILED: Unable to load SDL_TTF" << std::endl;
+	}
+
+	assets->AddTexture("terrain", "assets/cave_1_ss.png");
+	assets->AddTexture("player", "assets/character_spritesheet.png");
+
+	assets->AddFont("Determination", "assets/Determination.ttf", 16);
+
+	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/cave_1.map", 50, 40);
 
 
 	player.addComponent<TransformComponent>(camera.w/2, camera.h/2, 31, 19, scale);
-	player.addComponent<SpriteComponent>("assets/character_spritesheet.png", true);
+	player.addComponent<SpriteComponent>("player", true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
+
+	SDL_Color white = { 255, 255, 255 };
+	label.addComponent<UILabel>(10, 10, "Test String", "Determination", white);
 
 	
 }
@@ -88,6 +106,10 @@ void Game::update()
 	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
 	Vector2D playerPos = player.getComponent<TransformComponent>().position;
 	Vector2D playerVel = player.getComponent<TransformComponent>().velocity;
+
+	std::stringstream ss;
+	ss << "Player position: " << playerPos;
+	label.getComponent<UILabel>().SetLabelText(ss.str(), "Determination");
 
 	manager.refresh();
 	manager.update();
@@ -142,6 +164,8 @@ void Game::render()
 	{
 		p->draw();
 	}
+
+	label.draw();
 	SDL_RenderPresent(renderer);
 }
 
