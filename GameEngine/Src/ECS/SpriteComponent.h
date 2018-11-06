@@ -13,6 +13,7 @@ private:
 	TransformComponent *transform;
 	SDL_Texture *texture;
 	SDL_Rect srcRect, destRect;
+	bool overlay = false;
 
 	bool animated = false;
 	int frames = 0;
@@ -28,6 +29,13 @@ public:
 	SpriteComponent() = default;
 	SpriteComponent(std::string id)
 	{
+		setTex(id);
+	}
+
+	SpriteComponent(std::string id, bool isAnimated, bool isOverlay)
+	{
+		animated = isAnimated;
+		overlay = isOverlay;
 		setTex(id);
 	}
 
@@ -80,12 +88,23 @@ public:
 			srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
 		}
 
-		srcRect.y = animIndex * transform->height;
+		if (!overlay)
+		{
+			srcRect.y = animIndex * transform->height;
 
-		destRect.x = static_cast<int>(transform->position.x) - Game::camera.x;
-		destRect.y = static_cast<int>(transform->position.y) - Game::camera.y;
-		destRect.w = transform->width * transform->scale;
-		destRect.h = transform->height * transform->scale;
+			destRect.x = static_cast<int>(transform->position.x) - Game::camera.x;
+			destRect.y = static_cast<int>(transform->position.y) - Game::camera.y;
+			destRect.w = transform->width * transform->scale;
+			destRect.h = transform->height * transform->scale;
+		}
+		else {
+			srcRect.y = animIndex * transform->height;
+
+			destRect.x = static_cast<int>(transform->position.x);
+			destRect.y = static_cast<int>(transform->position.y);
+			destRect.w = transform->width * transform->scale;
+			destRect.h = transform->height * transform->scale;
+		}
 	}
 
 	void draw() override

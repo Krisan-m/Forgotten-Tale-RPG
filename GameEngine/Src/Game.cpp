@@ -61,7 +61,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	assets->AddTexture("player", "assets/character_spritesheet.png");
 	assets->AddTexture("dialogue", "assets/DialogueBackground.png");
 
-	assets->AddFont("Determination", "assets/Determination.ttf", 16);
+	assets->AddFont("Determination", "assets/Determination.ttf", 32);
 
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/cave_1.map", 50, 40);
@@ -73,11 +73,11 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
 
-	assets->CreateDialogue(Vector2D(1200, 960), "dialogue");
+	assets->CreateDialogue(Vector2D(200, 350), "dialogue");
 
 
 	SDL_Color white = { 255, 255, 255 };
-	label.addComponent<UILabel>(10, 10, "You have awoken.", "Determination", white);
+	label.addComponent<UILabel>(250, 400, "You have awoken.", "Determination", white);
 
 	
 }
@@ -107,14 +107,14 @@ Vector2D lastPlayerPos;
 
 void Game::update()
 {
-
+		
 	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
 	Vector2D playerPos = player.getComponent<TransformComponent>().position;
 	Vector2D playerVel = player.getComponent<TransformComponent>().velocity;
 
-	std::stringstream ss;
-	ss << "Player position: " << playerPos;
-	label.getComponent<UILabel>().SetLabelText(ss.str(), "Determination");
+	//std::stringstream ss;
+	//ss << "Player position: " << playerPos;
+	//label.getComponent<UILabel>().SetLabelText(ss.str(), "Determination");
 
 	manager.refresh();
 	manager.update();
