@@ -33,7 +33,8 @@ public:
 		groupMap,
 		groupPlayers,
 		groupTerrainColliders,
-		groupPortalColliders
+		groupPortalColliders,
+		groupDialogues
 	};
 
 private:

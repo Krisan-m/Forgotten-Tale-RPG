@@ -13,7 +13,8 @@ public:
 	AssetManager(Manager* man);
 	~AssetManager();
 
-	//gameobj
+	//game objects
+	void CreateDialogue(Vector2D pos, std::string id);
 
 	//texture management
 	void AddTexture(std::string id, const char* path);

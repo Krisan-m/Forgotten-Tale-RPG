@@ -59,6 +59,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	assets->AddTexture("terrain", "assets/cave_1_ss.png");
 	assets->AddTexture("player", "assets/character_spritesheet.png");
+	assets->AddTexture("dialogue", "assets/DialogueBackground.png");
 
 	assets->AddFont("Determination", "assets/Determination.ttf", 16);
 
@@ -72,8 +73,11 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
 
+	assets->CreateDialogue(Vector2D(1200, 960), "dialogue");
+
+
 	SDL_Color white = { 255, 255, 255 };
-	label.addComponent<UILabel>(10, 10, "Test String", "Determination", white);
+	label.addComponent<UILabel>(10, 10, "You have awoken.", "Determination", white);
 
 	
 }
@@ -83,6 +87,7 @@ auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& terrainColliders(manager.getGroup(Game::groupTerrainColliders));
 auto& portalColliders(manager.getGroup(Game::groupPortalColliders));
+auto& dialogues(manager.getGroup(Game::groupDialogues));
 
 void Game::handleEvents()
 {
@@ -163,6 +168,10 @@ void Game::render()
 	for (auto& p : players)
 	{
 		p->draw();
+	}
+	for (auto& d : dialogues)
+	{
+		d->draw();
 	}
 
 	label.draw();
