@@ -10,6 +10,7 @@ class KeyboardController : public Component
 public:
 	TransformComponent *transform;
 	SpriteComponent *sprite;
+	bool receiveInput = true;
 
 	void init() override
 	{
@@ -19,6 +20,18 @@ public:
 
 	void update() override
 	{
+		if (!receiveInput) {
+			if (Game::event.type == SDL_KEYDOWN)
+				switch (Game::event.key.keysym.sym)
+				{
+				case SDLK_z:
+					// go to next dialog
+					break;
+				default:
+					break;
+				}
+			return;
+		}
 		if (Game::event.type == SDL_KEYDOWN)
 		{
 			switch (Game::event.key.keysym.sym)

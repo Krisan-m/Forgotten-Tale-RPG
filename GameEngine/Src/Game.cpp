@@ -78,6 +78,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	SDL_Color white = { 255, 255, 255 };
 	label.addComponent<UILabel>(250, 400, "You have awoken.", "Determination", white);
+	player.getComponent<KeyboardController>().receiveInput = false;
 
 	
 }
