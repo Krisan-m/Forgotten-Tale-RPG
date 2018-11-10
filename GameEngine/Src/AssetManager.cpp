@@ -12,6 +12,7 @@ void AssetManager::CreateDialogue(Vector2D pos, std::string id)
 	auto& dialogue(manager->addEntity());
 	dialogue.addComponent<TransformComponent>(pos.x, pos.y, 200, 400, 1);
 	dialogue.addComponent<SpriteComponent>("dialogue", false, true);
+	dialogue.addComponent<KeyboardController>();
 	dialogue.addComponent<DialogueComponent>();
 	dialogue.addGroup(Game::groupDialogues);
 }

@@ -22,6 +22,7 @@ private:
 public:
 
 	int animIndex = 0;
+	int entityID = 3;
 	SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
 
 	std::map<const char*, Animation> animations
@@ -30,6 +31,7 @@ public:
 	SpriteComponent(std::string id)
 	{
 		setTex(id);
+		//entityID = id;
 	}
 
 	SpriteComponent(std::string id, bool isAnimated, bool isOverlay)
@@ -37,11 +39,13 @@ public:
 		animated = isAnimated;
 		overlay = isOverlay;
 		setTex(id);
+		//entityID = id;
 	}
 
 	SpriteComponent(std::string id, bool isAnimated)
 	{
 		animated = isAnimated;
+		//entityID = id;
 
 		Animation idle_front = Animation(0, 1, 100);
 		Animation idle_side = Animation(1, 1, 100);

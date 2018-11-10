@@ -20,12 +20,14 @@ public:
 
 	void update() override
 	{
+		std::cout << &entity->getComponent<SpriteComponent>().entityID << std::endl;
 		if (!receiveInput) {
 			if (Game::event.type == SDL_KEYDOWN)
 				switch (Game::event.key.keysym.sym)
 				{
 				case SDLK_z:
 					// go to next dialog
+					std::cout << "trigger next dialogue" << std::endl;
 					break;
 				default:
 					break;
