@@ -10,24 +10,27 @@ class KeyboardController : public Component
 public:
 	TransformComponent *transform;
 	SpriteComponent *sprite;
+	DialogueComponent *dialogue;
 	bool receiveInput = true;
 
 	void init() override
 	{
 		transform = &entity->getComponent<TransformComponent>();
 		sprite = &entity->getComponent<SpriteComponent>();
+		dialogue = &entity->getComponent<DialogueComponent>();
 	}
 
 	void update() override
 	{
-		std::cout << &entity->getComponent<SpriteComponent>().entityID << std::endl;
-		if (!receiveInput) {
+		if (!receiveInput || (entity->hasGroup(Game::groupDialogues))) {
 			if (Game::event.type == SDL_KEYDOWN)
 				switch (Game::event.key.keysym.sym)
 				{
 				case SDLK_z:
 					// go to next dialog
-					std::cout << "trigger next dialogue" << std::endl;
+					if (entity->hasGroup(Game::groupDialogues)) {
+						dialogue->nextScreen();
+					}
 					break;
 				default:
 					break;

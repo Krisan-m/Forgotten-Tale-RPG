@@ -7,14 +7,17 @@ AssetManager::AssetManager(Manager* man) : manager(man)
 AssetManager::~AssetManager()
 {}
 
-void AssetManager::CreateDialogue(Vector2D pos, std::string id)
+void AssetManager::CreateDialogue(Vector2D pos, std::string id, Entity& dialogue)
 {
-	auto& dialogue(manager->addEntity());
+	//auto& dialogue(manager->addEntity());
 	dialogue.addComponent<TransformComponent>(pos.x, pos.y, 200, 400, 1);
 	dialogue.addComponent<SpriteComponent>("dialogue", false, true);
-	dialogue.addComponent<KeyboardController>();
 	dialogue.addComponent<DialogueComponent>();
+	SDL_Color white = { 255, 255, 255 };
+	dialogue.addComponent<UILabel>(250, 400, "You have awoken.", "Determination", white);
+	dialogue.addComponent<KeyboardController>();
 	dialogue.addGroup(Game::groupDialogues);
+	//return dialogue;
 }
 
 void AssetManager::AddTexture(std::string id, const char* path)

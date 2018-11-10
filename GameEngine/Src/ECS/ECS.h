@@ -49,6 +49,7 @@ class Entity
 {
 private:
 	Manager& manager;
+	bool visible = true;
 	bool active = true;
 	std::vector<std::unique_ptr<Component>> components;
 
@@ -69,6 +70,8 @@ public:
 	}
 
 	bool isActive() const { return active; }
+	bool isVisible() const { return visible; }
+	void hide() { visible = false; }
 	void destroy() { active = false; }
 
 	bool hasGroup(Group mGroup)

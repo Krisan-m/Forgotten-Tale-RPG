@@ -14,7 +14,7 @@ public:
 	~AssetManager();
 
 	//game objects
-	void CreateDialogue(Vector2D pos, std::string id);
+	void CreateDialogue(Vector2D pos, std::string id, Entity& dialogue);
 
 	//texture management
 	void AddTexture(std::string id, const char* path);

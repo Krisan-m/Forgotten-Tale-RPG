@@ -23,7 +23,7 @@ bool Game::isRunning = false;
 
 auto& player(manager.addEntity());
 auto& label(manager.addEntity());
-
+auto& dialogueEntity(manager.addEntity());
 
 Game::Game()
 {}
@@ -73,12 +73,19 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
 
-	assets->CreateDialogue(Vector2D(200, 350), "dialogue");
+	//auto& dialogueEntity(assets->CreateDialogue(Vector2D(200, 350), "dialogue"));
+	//auto& dialogue(assets->CreateDialogue(Vector2D(200, 350), "dialogue"));
+	assets->CreateDialogue(Vector2D(200, 350), "dialogue", dialogueEntity);
+	//dialogueEntity = dialogueEntity2;
+	//label.addComponent<TransformComponent>(200, 350, 200, 400, 1);
+	//label.addComponent<SpriteComponent>("dialogue", false, true);
+	//label.addComponent<DialogueComponent>();
+	//label.addComponent<KeyboardController>();
+	//label.addGroup(Game::groupDialogues);
 
 
-	SDL_Color white = { 255, 255, 255 };
-	label.addComponent<UILabel>(250, 400, "You have awoken.", "Determination", white);
-	player.getComponent<KeyboardController>().receiveInput = false;
+	//SDL_Color white = { 255, 255, 255 };
+	//label.addComponent<UILabel>(250, 400, "You have awoken.", "Determination", white);
 
 	
 }
@@ -108,6 +115,12 @@ Vector2D lastPlayerPos;
 
 void Game::update()
 {
+	if (dialogueEntity.isVisible()) {
+		player.getComponent<KeyboardController>().receiveInput = false;
+	}
+	else {
+		player.getComponent<KeyboardController>().receiveInput = true;
+	}
 		
 	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
 	Vector2D playerPos = player.getComponent<TransformComponent>().position;
