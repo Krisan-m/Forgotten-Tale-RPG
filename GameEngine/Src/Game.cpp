@@ -66,13 +66,13 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/cave_1.map", 50, 40);
 
-	player.addComponent<TransformComponent>(1200, 900, 31, 19, scale);
+	player.addComponent<TransformComponent>(1200, 640, 31, 19, scale);
 	player.addComponent<SpriteComponent>("player", true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
 
-	assets->CreateDialogue(Vector2D(200, 350), "dialogue", dialogueEntity);
+	assets->CreateDialogue(Vector2D(screenX/2 - 290, 450), "dialogue", dialogueEntity);
 }
 
 
