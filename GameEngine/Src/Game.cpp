@@ -15,7 +15,7 @@ SDL_Event Game::event;
 int screenX = 800;
 int screenY = 640;
 int scale = 3;
-SDL_Rect Game::camera = {0, 0, screenX * scale, screenY * scale}; //width and height of map
+SDL_Rect Game::camera = {0, 0, screenX, screenY}; //width and height of camera
 
 AssetManager* Game::assets = new AssetManager(&manager);
 
@@ -59,35 +59,20 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	assets->AddTexture("terrain", "assets/cave_1_ss.png");
 	assets->AddTexture("player", "assets/character_spritesheet.png");
+	
 	assets->AddTexture("dialogue", "assets/DialogueBackground.png");
-
 	assets->AddFont("Determination", "assets/Determination.ttf", 32);
 
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/cave_1.map", 50, 40);
 
-
-	player.addComponent<TransformComponent>(camera.w/2, camera.h/2, 31, 19, scale);
+	player.addComponent<TransformComponent>(1200, 900, 31, 19, scale);
 	player.addComponent<SpriteComponent>("player", true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
 
-	//auto& dialogueEntity(assets->CreateDialogue(Vector2D(200, 350), "dialogue"));
-	//auto& dialogue(assets->CreateDialogue(Vector2D(200, 350), "dialogue"));
 	assets->CreateDialogue(Vector2D(200, 350), "dialogue", dialogueEntity);
-	//dialogueEntity = dialogueEntity2;
-	//label.addComponent<TransformComponent>(200, 350, 200, 400, 1);
-	//label.addComponent<SpriteComponent>("dialogue", false, true);
-	//label.addComponent<DialogueComponent>();
-	//label.addComponent<KeyboardController>();
-	//label.addGroup(Game::groupDialogues);
-
-
-	//SDL_Color white = { 255, 255, 255 };
-	//label.addComponent<UILabel>(250, 400, "You have awoken.", "Determination", white);
-
-	
 }
 
 
@@ -126,10 +111,6 @@ void Game::update()
 	Vector2D playerPos = player.getComponent<TransformComponent>().position;
 	Vector2D playerVel = player.getComponent<TransformComponent>().velocity;
 
-	//std::stringstream ss;
-	//ss << "Player position: " << playerPos;
-	//label.getComponent<UILabel>().SetLabelText(ss.str(), "Determination");
-
 	manager.refresh();
 	manager.update();
 
@@ -150,16 +131,17 @@ void Game::update()
 	//take away half of screen to keep player in middle
 	camera.x = player.getComponent<TransformComponent>().position.x - (screenX/2);
 	camera.y = player.getComponent<TransformComponent>().position.y - (screenY/2);
-
-	//check bounds to avoid showing null map
+	
+	// check bounds to avoid showing null map
+	// TODO: When in fullscreen, some null map shows for the last two cases
 	if (camera.x < 0)
 		camera.x = 0;
 	if (camera.y < 0)
 		camera.y = 0;
-	if (camera.x > camera.w - screenX)
-		camera.x = camera.w - screenX;
-	if (camera.y > camera.h - screenY)
-		camera.y = camera.h - screenY;	
+	if (camera.x > screenX * scale - screenX)
+		camera.x = screenX * scale - screenX;
+	if (camera.y > screenY * scale - screenY)
+		camera.y = screenY * scale - screenY;
 }
 
 
