@@ -7,6 +7,7 @@ class DialogueComponent : public Component
 private:
 	TransformComponent* transform;
 	SpriteComponent* sprite;
+	UILabel* label;
 
 public:
 	DialogueComponent()
@@ -17,14 +18,14 @@ public:
 	void init() override
 	{
 		transform = &entity->getComponent<TransformComponent>();
+		label = &entity->getComponent<UILabel>();
 		sprite = &entity->getComponent<SpriteComponent>();
 	}
 
 	void nextScreen() 
 	{
-		std::cout << "trigger logic " << std::endl;
 		entity->hide();
-		entity->destroy();
-		//entity->delGroup(Game::groupDialogues);
+		sprite->destroy();
+		label->SetLabelText("", "Determination");
 	}
 };

@@ -22,7 +22,7 @@ public:
 
 	void update() override
 	{
-		if (!receiveInput || (entity->hasGroup(Game::groupDialogues))) {
+		if (!receiveInput || (entity->hasGroup(Game::groupDialogues) && entity->isVisible())) {
 			if (Game::event.type == SDL_KEYDOWN)
 				switch (Game::event.key.keysym.sym)
 				{

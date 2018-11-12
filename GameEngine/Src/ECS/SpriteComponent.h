@@ -64,6 +64,7 @@ public:
 
 	~SpriteComponent()
 	{
+		SDL_DestroyTexture(texture);
 	}
 
 	void setTex(std::string id)
@@ -110,6 +111,11 @@ public:
 	void draw() override
 	{
 		TextureManager::Draw(texture, srcRect, destRect, spriteFlip);
+	}
+
+	void destroy() 
+	{
+		SDL_DestroyTexture(texture);
 	}
 
 	void Play(const char* animName)
