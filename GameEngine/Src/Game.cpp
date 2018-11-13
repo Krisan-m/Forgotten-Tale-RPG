@@ -72,7 +72,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
 
-	assets->CreateDialogue(Vector2D(screenX/2 - 290, 450), "dialogue", dialogueEntity);
+	assets->CreateDialogue(Vector2D(screenX/2 - 290, 450), "dialogue", dialogueEntity, "You have awoken from a deep slumber.");
 }
 
 

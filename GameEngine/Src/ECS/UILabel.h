@@ -26,7 +26,10 @@ public:
 
 	void SetLabelText(std::string text, std::string font)
 	{
-		SDL_Surface* surf = TTF_RenderText_Blended_Wrapped(Game::assets->GetFont(font), text.c_str(), textColour, 500);
+		std::string displayString = text.substr(0, progress/10);
+		if(progress != text.length()*10) progress++;
+
+		SDL_Surface* surf = TTF_RenderText_Blended_Wrapped(Game::assets->GetFont(font), displayString.c_str(), textColour, 500);
 		labelTexture = SDL_CreateTextureFromSurface(Game::renderer, surf);
 		SDL_FreeSurface(surf);
 
@@ -36,11 +39,14 @@ public:
 
 	void draw() override
 	{
+		if (progress != labelText.length()*10 + 10) SetLabelText(labelText, labelFont);
+
 		SDL_RenderCopy(Game::renderer, labelTexture, nullptr, &position); //nullptr for source rect since we want to draw all of it
 	}
 
 private:
 	SDL_Rect position;
+	int progress = 10;
 	std::string labelText;
 	std::string labelFont;
 	SDL_Color textColour;
