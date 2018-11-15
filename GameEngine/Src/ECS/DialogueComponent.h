@@ -24,8 +24,13 @@ public:
 
 	void nextScreen() 
 	{
-		entity->hide();
-		sprite->destroy();
-		label->SetLabelText("", "Determination");
+		if (label->fullyDrawn()) {
+			entity->hide();
+			sprite->destroy();
+			label->SetLabelText("", "Determination");
+		}
+		else {
+			label->fullyDraw();
+		}
 	}
 };
