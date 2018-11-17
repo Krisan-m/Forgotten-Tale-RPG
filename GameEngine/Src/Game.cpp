@@ -57,16 +57,16 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		std::cout << "FAILED: Unable to load SDL_TTF" << std::endl;
 	}
 
-	assets->AddTexture("terrain", "assets/cave_1_ss.png");
+	assets->AddTexture("terrain", "assets/room_1_tileset.png");
 	assets->AddTexture("player", "assets/character_spritesheet.png");
 	
 	assets->AddTexture("dialogue", "assets/DialogueBackground.png");
 	assets->AddFont("Determination", "assets/Determination.ttf", 32);
 
 	map = new Map("terrain", scale, 16);
-	map->LoadMap("assets/cave_1.map", 50, 40);
+	map->LoadMap("assets/room_1.map", 50, 40);
 
-	player.addComponent<TransformComponent>(1200, 640, 31, 19, scale);
+	player.addComponent<TransformComponent>(1250, 250, 31, 19, scale);
 	player.addComponent<SpriteComponent>("player", true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
