@@ -34,6 +34,7 @@ public:
 		groupPlayers,
 		groupTerrainColliders,
 		groupPortalColliders,
+		groupInteractiveObjects,
 		groupDialogues
 	};
 

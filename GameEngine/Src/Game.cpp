@@ -24,6 +24,7 @@ bool Game::isRunning = false;
 auto& player(manager.addEntity());
 auto& label(manager.addEntity());
 auto& dialogueEntity(manager.addEntity());
+auto& fire(manager.addEntity());
 
 Game::Game()
 {}
@@ -59,9 +60,16 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	assets->AddTexture("terrain", "assets/room_1_tileset.png");
 	assets->AddTexture("player", "assets/character_spritesheet.png");
+	assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
 	
 	assets->AddTexture("dialogue", "assets/DialogueBackground.png");
 	assets->AddFont("Determination", "assets/Determination.ttf", 32);
+
+	fire.addComponent<TransformComponent>(1250, 0, 64, 32, scale);
+	fire.addComponent<SpriteComponent>("fireplace", true);
+	fire.addComponent<ColliderComponent>("fireplace");
+	fire.addGroup(groupTerrainColliders);
+	fire.addGroup(groupInteractiveObjects);
 
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
@@ -80,6 +88,7 @@ auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& terrainColliders(manager.getGroup(Game::groupTerrainColliders));
 auto& portalColliders(manager.getGroup(Game::groupPortalColliders));
+auto& interactiveObjects(manager.getGroup(Game::groupInteractiveObjects));
 auto& dialogues(manager.getGroup(Game::groupDialogues));
 
 void Game::handleEvents()
@@ -133,7 +142,7 @@ void Game::update()
 	camera.y = player.getComponent<TransformComponent>().position.y - (screenY/2);
 	
 	// check bounds to avoid showing null map
-	// TODO: When in fullscreen, some null map shows for the last two cases
+	// TODO: Make it work for fullscreen
 	if (camera.x < 0)
 		camera.x = 0;
 	if (camera.y < 0)
@@ -155,7 +164,7 @@ void Game::render()
 	}
 	for (auto& c : terrainColliders)
 	{
-		c->draw();
+		//c->draw();
 	}
 	for (auto& pc : portalColliders)
 	{
@@ -164,6 +173,10 @@ void Game::render()
 	for (auto& p : players)
 	{
 		p->draw();
+	}
+	for (auto& o : interactiveObjects)
+	{
+		o->draw();
 	}
 	for (auto& d : dialogues)
 	{

@@ -43,22 +43,30 @@ public:
 	{
 		animated = isAnimated;
 
-		Animation idle_front = Animation(0, 1, 100);
-		Animation idle_side = Animation(1, 1, 100);
-		Animation idle_back = Animation(2, 1, 100);
+		// TODO: Gneralize this animation logic
+		if (id == "fireplace") {
+			Animation fire1 = Animation(0, 7, 100);
+			animations.emplace("fire", fire1);
+			Play("fire");
+		}
+		else {
+			Animation idle_front = Animation(0, 1, 100);
+			Animation idle_side = Animation(1, 1, 100);
+			Animation idle_back = Animation(2, 1, 100);
 
-		Animation walk_down = Animation(0, 6, 100);
-		Animation walk_left = Animation(1, 6, 100);
-		Animation walk_up = Animation(2, 6, 100);
+			Animation walk_down = Animation(0, 6, 100);
+			Animation walk_left = Animation(1, 6, 100);
+			Animation walk_up = Animation(2, 6, 100);
 
-		animations.emplace("Idle Front", idle_front);
-		animations.emplace("Idle Side", idle_side);
-		animations.emplace("Idle Back", idle_back);
-		animations.emplace("Walk Down", walk_down);
-		animations.emplace("Walk Left", walk_left);
-		animations.emplace("Walk Up", walk_up);
+			animations.emplace("Idle Front", idle_front);
+			animations.emplace("Idle Side", idle_side);
+			animations.emplace("Idle Back", idle_back);
+			animations.emplace("Walk Down", walk_down);
+			animations.emplace("Walk Left", walk_left);
+			animations.emplace("Walk Up", walk_up);
 
-		Play("Idle Front");
+			Play("Idle Front");
+		}
 		setTex(id);
 	}
 
