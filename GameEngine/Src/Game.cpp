@@ -6,6 +6,7 @@
 #include "Collision.h"
 #include "AssetManager.h"
 #include <sstream>
+#include <vector>
 
 Map* map;
 Manager manager;
@@ -66,8 +67,9 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	assets->AddFont("Determination", "assets/Determination.ttf", 32);
 
 	fire.addComponent<TransformComponent>(1250, 0, 64, 32, scale);
-	fire.addComponent<SpriteComponent>("fireplace", true);
 	fire.addComponent<ColliderComponent>("fireplace");
+	std::vector<int> animationIndexFrame{7};  //animations, frames
+	fire.addComponent<SpriteComponent>("fireplace", true, animationIndexFrame);
 	fire.addGroup(groupTerrainColliders);
 	fire.addGroup(groupInteractiveObjects);
 

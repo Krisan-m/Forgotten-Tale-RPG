@@ -6,13 +6,16 @@
 #include "Animation.h"
 #include <map>
 #include "../AssetManager.h"
+#include <vector>
 
 class SpriteComponent : public Component
 {
 private:
 	TransformComponent *transform;
 	SDL_Texture *texture;
+	std::string texID;
 	SDL_Rect srcRect, destRect;
+	std::vector<int> animationInfo;
 	bool overlay = false;
 
 	bool animated = false;
@@ -29,6 +32,7 @@ public:
 	SpriteComponent() = default;
 	SpriteComponent(std::string id)
 	{
+		texID = id;
 		setTex(id);
 	}
 
@@ -36,37 +40,22 @@ public:
 	{
 		animated = isAnimated;
 		overlay = isOverlay;
+		texID = id;
 		setTex(id);
 	}
 
 	SpriteComponent(std::string id, bool isAnimated)
 	{
 		animated = isAnimated;
+		texID = id;
+		setTex(id);
+	}
 
-		// TODO: Gneralize this animation logic
-		if (id == "fireplace") {
-			Animation fire1 = Animation(0, 7, 100);
-			animations.emplace("fire", fire1);
-			Play("fire");
-		}
-		else {
-			Animation idle_front = Animation(0, 1, 100);
-			Animation idle_side = Animation(1, 1, 100);
-			Animation idle_back = Animation(2, 1, 100);
-
-			Animation walk_down = Animation(0, 6, 100);
-			Animation walk_left = Animation(1, 6, 100);
-			Animation walk_up = Animation(2, 6, 100);
-
-			animations.emplace("Idle Front", idle_front);
-			animations.emplace("Idle Side", idle_side);
-			animations.emplace("Idle Back", idle_back);
-			animations.emplace("Walk Down", walk_down);
-			animations.emplace("Walk Left", walk_left);
-			animations.emplace("Walk Up", walk_up);
-
-			Play("Idle Front");
-		}
+	SpriteComponent(std::string id, bool isAnimated, std::vector<int> animInfo)
+	{
+		animated = isAnimated;
+		animationInfo = animInfo;
+		texID = id;
 		setTex(id);
 	}
 
@@ -85,6 +74,33 @@ public:
 
 		transform = &entity->getComponent<TransformComponent>();
 
+		// TODO: Genralize this animation logic
+		if (texID != "player" && animated) {
+			for (int i = 0; i < animationInfo.size(); i++) {
+				std::cout << std::to_string(i) << std::endl;
+				animations.emplace(std::to_string(i).c_str(), Animation(i, animationInfo[i], 100));
+			}
+			Play(std::to_string(0).c_str());
+		}
+		else if(animated) {
+			Animation idle_front = Animation(0, 1, 100);
+			Animation idle_side = Animation(1, 1, 100);
+			Animation idle_back = Animation(2, 1, 100);
+
+			Animation walk_down = Animation(0, 6, 100);
+			Animation walk_left = Animation(1, 6, 100);
+			Animation walk_up = Animation(2, 6, 100);
+
+			animations.emplace("Idle Front", idle_front);
+			animations.emplace("Idle Side", idle_side);
+			animations.emplace("Idle Back", idle_back);
+			animations.emplace("Walk Down", walk_down);
+			animations.emplace("Walk Left", walk_left);
+			animations.emplace("Walk Up", walk_up);
+
+			Play("Idle Front");
+		}
+		
 		srcRect.x = srcRect.y = 0;
 		srcRect.w = transform->width;
 		srcRect.h = transform->height;
