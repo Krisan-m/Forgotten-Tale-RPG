@@ -27,7 +27,7 @@ public:
 	int animIndex = 0;
 	SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
 
-	std::map<const char*, Animation> animations;
+	std::map<std::string, Animation> animations;
 
 	SpriteComponent() = default;
 	SpriteComponent(std::string id)
@@ -71,16 +71,14 @@ public:
 
 	void init() override
 	{
-
 		transform = &entity->getComponent<TransformComponent>();
 
-		// TODO: Genralize this animation logic
+		// General way of adding spritesheet info to SpriteComponent animation
 		if (texID != "player" && animated) {
 			for (int i = 0; i < animationInfo.size(); i++) {
-				std::cout << std::to_string(i) << std::endl;
-				animations.emplace(std::to_string(i).c_str(), Animation(i, animationInfo[i], 100));
+				animations.emplace(std::to_string(i), Animation(i, animationInfo[i], 100));
 			}
-			Play(std::to_string(0).c_str());
+			Play("0");
 		}
 		else if(animated) {
 			Animation idle_front = Animation(0, 1, 100);
