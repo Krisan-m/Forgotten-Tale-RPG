@@ -169,6 +169,7 @@
     <ClInclude Include="Src\ECS\Components.h" />
     <ClInclude Include="Src\ECS\DialogueComponent.h" />
     <ClInclude Include="Src\ECS\ECS.h" />
+    <ClInclude Include="Src\ECS\InteractiveComponent.h" />
     <ClInclude Include="Src\ECS\KeyboardController.h" />
     <ClInclude Include="Src\ECS\TileComponent.h" />
     <ClInclude Include="Src\ECS\TransformComponent.h" />

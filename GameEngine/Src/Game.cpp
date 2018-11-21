@@ -68,6 +68,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	fire.addComponent<TransformComponent>(1250, 0, 64, 32, scale);
 	fire.addComponent<ColliderComponent>("fireplace");
+	fire.addComponent<InteractiveComponent>();
 	std::vector<int> animationIndexFrame{7};  //animations, frames
 	fire.addComponent<SpriteComponent>("fireplace", true, animationIndexFrame);
 	fire.addGroup(groupTerrainColliders);

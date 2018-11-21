@@ -63,6 +63,9 @@ public:
 				transform->velocity.x = 0;
 				sprite->Play("Walk Down");
 				break;
+			case SDLK_z:
+				// check if player entity is near another collider with interactive object
+				break;
 			default:
 				break;
 			}
