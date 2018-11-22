@@ -126,6 +126,13 @@ void Game::update()
 	manager.refresh();
 	manager.update();
 
+	//interactive objects 
+	for (auto& o : interactiveObjects)
+	{
+		SDL_Rect oCol = o->getComponent<ColliderComponent>().collider;
+		Collision::InteractiveRangeCollision(oCol, playerCol);
+	}
+
 	//check if player has collision with any of the colliders on the map
 	bool wasCollision = false;
 	for (auto& c : terrainColliders)

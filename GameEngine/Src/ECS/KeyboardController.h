@@ -64,7 +64,8 @@ public:
 				sprite->Play("Walk Down");
 				break;
 			case SDLK_z:
-				// check if player entity is near another collider with interactive object
+				// check if player entity is near another collider with interactive 
+				auto& objects(entity->getManager().getGroup(Game::groupInteractiveObjects));
 				break;
 			default:
 				break;
