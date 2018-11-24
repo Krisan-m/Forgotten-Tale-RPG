@@ -3,7 +3,7 @@
 #include "../Game.h"
 #include "ECS.h"
 #include "Components.h"
-
+#include "Collision.h"
 
 class KeyboardController : public Component
 {
@@ -11,6 +11,7 @@ public:
 	TransformComponent *transform;
 	SpriteComponent *sprite;
 	DialogueComponent *dialogue;
+	InteractiveComponent *interactiveObject;
 	bool receiveInput = true;
 
 	void init() override
@@ -18,6 +19,7 @@ public:
 		transform = &entity->getComponent<TransformComponent>();
 		sprite = &entity->getComponent<SpriteComponent>();
 		dialogue = &entity->getComponent<DialogueComponent>();
+		interactiveObject = &entity->getComponent<InteractiveComponent>();
 	}
 
 	void update() override
@@ -35,6 +37,22 @@ public:
 				default:
 					break;
 				}
+			return;
+		}
+		// deal with interactive objects
+		if (entity->hasGroup(Game::groupInteractiveObjects)) {
+			if (Game::event.type == SDL_KEYDOWN) {
+				switch (Game::event.key.keysym.sym)
+				{
+				case SDLK_z:
+					if (interactiveObject->contactWithPlayer == true) {
+						interactiveObject->action();
+					}
+					break;
+				default:
+					break;
+				}
+			}
 			return;
 		}
 		if (Game::event.type == SDL_KEYDOWN)
@@ -62,10 +80,6 @@ public:
 				transform->velocity.y = 1;
 				transform->velocity.x = 0;
 				sprite->Play("Walk Down");
-				break;
-			case SDLK_z:
-				// check if player entity is near another collider with interactive 
-				auto& objects(entity->getManager().getGroup(Game::groupInteractiveObjects));
 				break;
 			default:
 				break;

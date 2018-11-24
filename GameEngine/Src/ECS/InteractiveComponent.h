@@ -12,7 +12,7 @@ private:
 	DialogueComponent * dialogue;
 
 public:
-
+	bool contactWithPlayer = false;
 	//InteractiveComponent() = default;
 	InteractiveComponent()
 	{

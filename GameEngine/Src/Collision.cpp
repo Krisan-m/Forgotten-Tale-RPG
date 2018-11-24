@@ -40,7 +40,7 @@ bool Collision::InteractiveRangeCollision(const SDL_Rect& recA, const SDL_Rect& 
 		recB.y + recB.h + 5 >= recA.y
 		)
 	{
-		std::cout << "within interaction range" << std::endl;
+		//std::cout << "within interaction range" << std::endl;
 		return true;
 	}
 

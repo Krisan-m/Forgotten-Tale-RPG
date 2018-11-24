@@ -71,6 +71,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	fire.addComponent<InteractiveComponent>();
 	std::vector<int> animationIndexFrame{7};  //animations, frames
 	fire.addComponent<SpriteComponent>("fireplace", true, animationIndexFrame);
+	fire.addComponent<KeyboardController>();
 	fire.addGroup(groupTerrainColliders);
 	fire.addGroup(groupInteractiveObjects);
 
@@ -79,8 +80,8 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	player.addComponent<TransformComponent>(1250, 250, 31, 19, scale);
 	player.addComponent<SpriteComponent>("player", true);
-	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
+	player.addComponent<KeyboardController>();
 	player.addGroup(groupPlayers);
 
 	assets->CreateDialogue(Vector2D(screenX/2 - 290, 450), "dialogue", dialogueEntity, "You have awoken from a deep slumber.");
@@ -130,7 +131,12 @@ void Game::update()
 	for (auto& o : interactiveObjects)
 	{
 		SDL_Rect oCol = o->getComponent<ColliderComponent>().collider;
-		Collision::InteractiveRangeCollision(oCol, playerCol);
+		if (Collision::InteractiveRangeCollision(oCol, playerCol)) {
+			o->getComponent<InteractiveComponent>().contactWithPlayer = true;
+		}
+		else {
+			o->getComponent<InteractiveComponent>().contactWithPlayer = false;
+		}
 	}
 
 	//check if player has collision with any of the colliders on the map
