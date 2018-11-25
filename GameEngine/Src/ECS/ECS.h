@@ -77,6 +77,7 @@ public:
 	bool isActive() const { return active; }
 	bool isVisible() const { return visible; }
 	void hide() { visible = false; }
+	void show() { visible = true; }
 	void destroy() { active = false; }
 
 	bool hasGroup(Group mGroup)

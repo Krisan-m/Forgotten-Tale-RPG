@@ -11,7 +11,7 @@ void AssetManager::CreateDialogue(Vector2D pos, std::string id, Entity& dialogue
 {
 	//auto& dialogue(manager->addEntity());
 	dialogue.addComponent<TransformComponent>(pos.x, pos.y, 180, 620, 1);
-	dialogue.addComponent<SpriteComponent>("dialogue", false, true);
+	dialogue.addComponent<SpriteComponent>(id, false, true);
 	SDL_Color white = { 255, 255, 255 };
 	dialogue.addComponent<UILabel>(pos.x + 20, 460, text, "Determination", white);
 	dialogue.addComponent<DialogueComponent>();

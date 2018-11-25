@@ -26,11 +26,18 @@ public:
 	{
 		if (label->fullyDrawn()) {
 			entity->hide();
-			sprite->destroy();
+			//sprite->destroy();
 			label->SetLabelText("", "Determination");
 		}
 		else {
 			label->fullyDraw();
 		}
+	}
+
+	void showDialogue(std::string text)
+	{
+		entity->show();
+		sprite->draw();
+		label->SetNewText(text);
 	}
 };

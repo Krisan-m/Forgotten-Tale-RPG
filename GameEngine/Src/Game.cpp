@@ -68,7 +68,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	fire.addComponent<TransformComponent>(1250, 0, 64, 32, scale);
 	fire.addComponent<ColliderComponent>("fireplace");
-	fire.addComponent<InteractiveComponent>();
+	fire.addComponent<InteractiveComponent>("The fire is almost out. It needs some wood.");
 	std::vector<int> animationIndexFrame{7};  //animations, frames
 	fire.addComponent<SpriteComponent>("fireplace", true, animationIndexFrame);
 	fire.addComponent<KeyboardController>();
@@ -113,10 +113,13 @@ Vector2D lastPlayerPos;
 
 void Game::update()
 {
+
 	if (dialogueEntity.isVisible()) {
+		std::cout << "VISIBLE" << std::endl;
 		player.getComponent<KeyboardController>().receiveInput = false;
 	}
 	else {
+		std::cout << "NOT VISIBLE" << std::endl;
 		player.getComponent<KeyboardController>().receiveInput = true;
 	}
 		

@@ -8,24 +8,25 @@
 class InteractiveComponent : public Component
 {
 private:
-	TransformComponent *transform;
+	SpriteComponent *sprite;
 	DialogueComponent * dialogue;
+	std::string dialogueText;
+	Manager * manager;
 
 public:
 	bool contactWithPlayer = false;
-	//InteractiveComponent() = default;
-	InteractiveComponent()
-	{
-	}
-
-	~InteractiveComponent()
-	{
-	}
-
-	void action() { std::cout << "INTERACTIVE OBJECT ACTION" << std::endl; }
+	InteractiveComponent(std::string text) : dialogueText(text) {}
+	~InteractiveComponent(){}
 
 	void init() override
 	{
+		sprite = &entity->getComponent<SpriteComponent>();
+		manager = &entity->getManager();
+	}
+
+	void action() {
+		std::cout << "INTERACTIVE OBJECT ACTION" << std::endl;
+		manager->getGroup(Game::groupDialogues)[0]->getComponent<DialogueComponent>().showDialogue(dialogueText);
 	}
 
 	void update() override

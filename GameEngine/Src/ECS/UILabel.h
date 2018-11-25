@@ -24,6 +24,12 @@ public:
 	~UILabel()
 	{}
 
+	void SetNewText(std::string text) 
+	{
+		progress = 0;
+		SetLabelText(text, "Determination");
+	}
+
 	void SetLabelText(std::string text, std::string font)
 	{
 		labelText = text;
