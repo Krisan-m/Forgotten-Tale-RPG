@@ -8,6 +8,7 @@ private:
 	TransformComponent* transform;
 	SpriteComponent* sprite;
 	UILabel* label;
+	bool dialogueBeingShown = false;
 
 public:
 	DialogueComponent()
@@ -29,6 +30,7 @@ public:
 			sprite->destroy();
 			label->SetLabelText("", "Determination");
 			label->setCompleteDrawing(false);
+			dialogueBeingShown = false;
 			return true;
 		}
 		else {
@@ -37,8 +39,13 @@ public:
 		}
 	}
 
+	bool isBeingShown() {
+		return dialogueBeingShown;
+	}
+
 	void showDialogue(std::string text)
 	{
+		dialogueBeingShown = true;
 		entity->show();
 		sprite->draw();
 		label->SetNewText(text);

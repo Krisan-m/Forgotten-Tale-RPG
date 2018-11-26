@@ -31,6 +31,7 @@ public:
 			manager->getGroup(Game::groupDialogues)[0]->getComponent<DialogueComponent>().showDialogue(dialogueText);
 			interacted = true;
 		}
+		interacted = manager->getGroup(Game::groupDialogues)[0]->getComponent<DialogueComponent>().isBeingShown();
 	}
 
 	void setInteracted(bool x) {
@@ -40,7 +41,6 @@ public:
 
 	void update() override
 	{
-
 	}
 
 	void draw() override
