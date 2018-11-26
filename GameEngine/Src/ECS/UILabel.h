@@ -55,6 +55,11 @@ public:
 		return completeDrawing;
 	}
 
+	void setCompleteDrawing(bool x) {
+		completeDrawing = x;
+		return;
+	}
+
 	void fullyDraw() {
 		progress = labelText.length() * 5;
 		SetLabelText(labelText, labelFont);

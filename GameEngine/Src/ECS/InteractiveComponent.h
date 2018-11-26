@@ -10,6 +10,7 @@ class InteractiveComponent : public Component
 private:
 	SpriteComponent *sprite;
 	DialogueComponent * dialogue;
+	bool interacted = false;
 	std::string dialogueText;
 	Manager * manager;
 
@@ -25,8 +26,16 @@ public:
 	}
 
 	void action() {
-		std::cout << "INTERACTIVE OBJECT ACTION" << std::endl;
-		manager->getGroup(Game::groupDialogues)[0]->getComponent<DialogueComponent>().showDialogue(dialogueText);
+		if (!interacted) {
+			std::cout << "INTERACTIVE OBJECT ACTION" << std::endl;
+			manager->getGroup(Game::groupDialogues)[0]->getComponent<DialogueComponent>().showDialogue(dialogueText);
+			interacted = true;
+		}
+	}
+
+	void setInteracted(bool x) {
+		interacted = x;
+		return;
 	}
 
 	void update() override

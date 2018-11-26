@@ -22,15 +22,18 @@ public:
 		sprite = &entity->getComponent<SpriteComponent>();
 	}
 
-	void nextScreen() 
+	bool nextScreen() 
 	{
 		if (label->fullyDrawn()) {
 			entity->hide();
-			//sprite->destroy();
+			sprite->destroy();
 			label->SetLabelText("", "Determination");
+			label->setCompleteDrawing(false);
+			return true;
 		}
 		else {
 			label->fullyDraw();
+			return false;
 		}
 	}
 
