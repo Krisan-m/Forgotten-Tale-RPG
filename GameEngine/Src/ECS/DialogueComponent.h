@@ -47,6 +47,7 @@ public:
 	{
 		dialogueBeingShown = true;
 		entity->show();
+		sprite->setTex(sprite->getTexID());
 		sprite->draw();
 		label->SetNewText(text);
 	}

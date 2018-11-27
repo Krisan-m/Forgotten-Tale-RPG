@@ -64,9 +64,16 @@ public:
 		SDL_DestroyTexture(texture);
 	}
 
+	std::string getTexID()
+	{
+		return texID;
+	}
+
 	void setTex(std::string id)
 	{
+		texID = id;
 		texture = Game::assets->GetTexture(id);
+		
 	}
 
 	void init() override
