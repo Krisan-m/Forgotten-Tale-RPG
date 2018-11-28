@@ -26,8 +26,9 @@ public:
 	bool nextScreen() 
 	{
 		if (label->fullyDrawn()) {
-			entity->hide();
-			sprite->destroy();
+			//entity->hide();
+			//sprite->destroy();
+			sprite->setHideSprite(true);
 			label->SetLabelText("", "Determination");
 			label->setCompleteDrawing(false);
 			dialogueBeingShown = false;
@@ -47,8 +48,7 @@ public:
 	{
 		dialogueBeingShown = true;
 		entity->show();
-		sprite->setTex(sprite->getTexID());
-		sprite->draw();
+		sprite->setHideSprite(false);
 		label->SetNewText(text);
 	}
 };

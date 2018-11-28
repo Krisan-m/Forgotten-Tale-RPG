@@ -24,6 +24,21 @@ public:
 
 	void update() override
 	{
+
+		if (entity->hasGroup(Game::groupDialogues)) {
+			switch (Game::event.key.keysym.sym)
+			{
+			case SDLK_b:
+				// go to nebxt dialog
+				if (entity->hasGroup(Game::groupDialogues)) {
+					sprite->setHideSprite(false);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
 		if (!receiveInput || (entity->hasGroup(Game::groupDialogues) && entity->isVisible())) {
 			if (Game::event.type == SDL_KEYDOWN)
 				switch (Game::event.key.keysym.sym)
@@ -39,6 +54,7 @@ public:
 				}
 			return;
 		}
+
 		// deal with interactive objects
 		if (entity->hasGroup(Game::groupInteractiveObjects)) {
 			if (Game::event.type == SDL_KEYDOWN) {

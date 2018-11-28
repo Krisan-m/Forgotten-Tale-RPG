@@ -17,6 +17,7 @@ private:
 	SDL_Rect srcRect, destRect;
 	std::vector<int> animationInfo;
 	bool overlay = false;
+	bool hideSprite = false;
 
 	bool animated = false;
 	int frames = 0;
@@ -139,12 +140,13 @@ public:
 
 	void draw() override
 	{
-		TextureManager::Draw(texture, srcRect, destRect, spriteFlip);
+		if (!hideSprite) {
+			TextureManager::Draw(texture, srcRect, destRect, spriteFlip);
+		}
 	}
 
-	void destroy() 
-	{
-		SDL_DestroyTexture(texture);
+	void setHideSprite(bool x) {
+		hideSprite = x;
 	}
 
 	void Play(const char* animName)
