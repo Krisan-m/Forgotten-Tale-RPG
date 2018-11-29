@@ -71,7 +71,7 @@ public:
 			}
 			return;
 		}
-		if (Game::event.type == SDL_KEYDOWN)
+		if (Game::event.type == SDL_KEYDOWN && entity->hasGroup(Game::groupPlayers))
 		{
 			switch (Game::event.key.keysym.sym)
 			{
@@ -102,7 +102,7 @@ public:
 			}
 		}
 
-		if (Game::event.type == SDL_KEYUP)
+		if (Game::event.type == SDL_KEYUP && entity->hasGroup(Game::groupPlayers))
 		{
 			switch (Game::event.key.keysym.sym)
 			{

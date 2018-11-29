@@ -26,8 +26,7 @@ public:
 	bool nextScreen() 
 	{
 		if (label->fullyDrawn()) {
-			//entity->hide();
-			//sprite->destroy();
+			entity->hide();
 			sprite->setHideSprite(true);
 			label->SetLabelText("", "Determination");
 			label->setCompleteDrawing(false);
