@@ -115,11 +115,9 @@ void Game::update()
 {
 
 	if (dialogueEntity.isVisible()) {
-		std::cout << "VISIBLE" << std::endl;
 		player.getComponent<KeyboardController>().receiveInput = false;
 	}
 	else {
-		std::cout << "NOT VISIBLE" << std::endl;
 		player.getComponent<KeyboardController>().receiveInput = true;
 	}
 		

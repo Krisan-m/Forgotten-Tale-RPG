@@ -39,7 +39,19 @@ public:
 			}
 		}
 
+		// case when dialogue is opened
 		if (!receiveInput || (entity->hasGroup(Game::groupDialogues) && entity->isVisible())) {
+			if (entity->hasGroup(Game::groupPlayers)) {
+				if(transform->velocity.x == 1) sprite->Play("Idle Side");
+				else if (transform->velocity.x == -1) {
+					sprite->Play("Idle Side");
+					sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
+				}
+				else if (transform->velocity.y == 1) sprite->Play("Idle Front");
+				else if (transform->velocity.y == -1) sprite->Play("Idle Back");
+				transform->velocity.x = 0;
+				transform->velocity.y = 0;
+			}
 			if (Game::event.type == SDL_KEYDOWN)
 				switch (Game::event.key.keysym.sym)
 				{

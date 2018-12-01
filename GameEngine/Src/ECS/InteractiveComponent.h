@@ -27,7 +27,6 @@ public:
 
 	void action() {
 		if (!interacted) {
-			std::cout << "INTERACTIVE OBJECT ACTION" << std::endl;
 			manager->getGroup(Game::groupDialogues)[0]->getComponent<DialogueComponent>().showDialogue(dialogueText);
 			interacted = true;
 		}
