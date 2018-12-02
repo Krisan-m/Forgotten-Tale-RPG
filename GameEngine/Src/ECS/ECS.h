@@ -49,7 +49,7 @@ class Entity
 {
 private:
 	Manager& manager;
-	bool visible = true;
+	bool connected = true;
 	bool active = true;
 	std::vector<std::unique_ptr<Component>> components;
 
@@ -75,9 +75,9 @@ public:
 	}
 
 	bool isActive() const { return active; }
-	bool isVisible() const { return visible; }
-	void hide() { visible = false; }
-	void show() { visible = true; }
+	bool isConnected() const { return connected; }
+	void disconnect() { connected = false; }
+	void connect() { connected = true; }
 	void destroy() { active = false; }
 
 	bool hasGroup(Group mGroup)
@@ -127,7 +127,10 @@ private:
 public:
 	void update()
 	{
-		for (auto& e : entities) e->update();
+		for (auto& e : entities) {
+			if (e->isConnected())
+				e->update();
+		}
 	}
 	void draw()
 	{

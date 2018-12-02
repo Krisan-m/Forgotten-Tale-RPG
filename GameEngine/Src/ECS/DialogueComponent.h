@@ -26,7 +26,7 @@ public:
 	bool nextScreen() 
 	{
 		if (label->fullyDrawn()) {
-			entity->hide();
+			entity->disconnect();
 			sprite->setHideSprite(true);
 			label->SetLabelText("", "Determination");
 			label->setCompleteDrawing(false);
@@ -46,7 +46,7 @@ public:
 	void showDialogue(std::string text)
 	{
 		dialogueBeingShown = true;
-		entity->show();
+		entity->connect();
 		sprite->setHideSprite(false);
 		label->SetNewText(text);
 	}

@@ -40,7 +40,7 @@ public:
 		}
 
 		// case when dialogue is opened
-		if (!receiveInput || (entity->hasGroup(Game::groupDialogues) && entity->isVisible())) {
+		if (!receiveInput || (entity->hasGroup(Game::groupDialogues) && entity->isConnected())) {
 			if (entity->hasGroup(Game::groupPlayers)) {
 				if(transform->velocity.x == 1) sprite->Play("Idle Side");
 				else if (transform->velocity.x == -1) {

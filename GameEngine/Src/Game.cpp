@@ -114,11 +114,13 @@ Vector2D lastPlayerPos;
 void Game::update()
 {
 
-	if (dialogueEntity.isVisible()) {
+	if (dialogueEntity.isConnected()) {
 		player.getComponent<KeyboardController>().receiveInput = false;
+		player.disconnect();
 	}
 	else {
 		player.getComponent<KeyboardController>().receiveInput = true;
+		player.connect();
 	}
 		
 	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
