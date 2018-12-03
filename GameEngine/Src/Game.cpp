@@ -116,11 +116,11 @@ void Game::update()
 
 	if (dialogueEntity.isConnected()) {
 		player.getComponent<KeyboardController>().receiveInput = false;
-		player.disconnect();
+		//player.disconnect();
 	}
 	else {
 		player.getComponent<KeyboardController>().receiveInput = true;
-		player.connect();
+		//player.connect();
 	}
 		
 	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
