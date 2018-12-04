@@ -26,6 +26,7 @@ auto& player(manager.addEntity());
 auto& label(manager.addEntity());
 auto& dialogueEntity(manager.addEntity());
 auto& fire(manager.addEntity());
+auto& startScreen(manager.addEntity());
 
 Game::Game()
 {}
@@ -57,6 +58,15 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	if (TTF_Init() == -1)
 	{
 		std::cout << "FAILED: Unable to load SDL_TTF" << std::endl;
+	}
+
+	//run start menu
+	assets->AddTexture("startScreen", "assets/StartScreen.png");
+	startScreen.addComponent<TransformComponent>(1200, 0, 800, 640, scale);
+	startScreen.addComponent<SpriteComponent>("startScreen");
+	bool inStartMenu = false;
+	while (inStartMenu) {
+		startScreen.draw();
 	}
 
 	assets->AddTexture("terrain", "assets/room_1_tileset.png");

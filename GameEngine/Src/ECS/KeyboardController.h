@@ -24,21 +24,6 @@ public:
 
 	void update() override
 	{
-
-		if (entity->hasGroup(Game::groupDialogues)) {
-			switch (Game::event.key.keysym.sym)
-			{
-			case SDLK_b:
-				// go to nebxt dialog
-				if (entity->hasGroup(Game::groupDialogues)) {
-					sprite->setHideSprite(false);
-				}
-				break;
-			default:
-				break;
-			}
-		}
-
 		// case when dialogue is opened
 		if (!receiveInput || (entity->hasGroup(Game::groupDialogues) && entity->isConnected())) {
 			if (entity->hasGroup(Game::groupPlayers)) {
