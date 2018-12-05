@@ -35,7 +35,8 @@ public:
 		groupTerrainColliders,
 		groupPortalColliders,
 		groupInteractiveObjects,
-		groupDialogues
+		groupDialogues,
+		groupScreenOverlays
 	};
 
 private:

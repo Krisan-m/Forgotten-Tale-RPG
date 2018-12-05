@@ -62,11 +62,12 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	//run start menu
 	assets->AddTexture("startScreen", "assets/StartScreen.png");
-	startScreen.addComponent<TransformComponent>(1200, 0, 800, 640, scale);
-	startScreen.addComponent<SpriteComponent>("startScreen");
+	startScreen.addComponent<TransformComponent>(0, 0, 640, 800, 1);
+	startScreen.addComponent<SpriteComponent>("startScreen", false, true);
+	startScreen.addGroup(groupScreenOverlays);
 	bool inStartMenu = false;
 	while (inStartMenu) {
-		startScreen.draw();
+
 	}
 
 	assets->AddTexture("terrain", "assets/room_1_tileset.png");
@@ -104,6 +105,7 @@ auto& terrainColliders(manager.getGroup(Game::groupTerrainColliders));
 auto& portalColliders(manager.getGroup(Game::groupPortalColliders));
 auto& interactiveObjects(manager.getGroup(Game::groupInteractiveObjects));
 auto& dialogues(manager.getGroup(Game::groupDialogues));
+auto& screens(manager.getGroup(Game::groupScreenOverlays));
 
 void Game::handleEvents()
 {
@@ -210,6 +212,10 @@ void Game::render()
 	for (auto& d : dialogues)
 	{
 		d->draw();
+	}
+	for (auto& s : screens)
+	{
+		s->draw();
 	}
 
 	label.draw();
