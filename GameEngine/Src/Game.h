@@ -15,13 +15,12 @@ public:
 	~Game();
 
 	void init(const char* title, int width, int height, bool fullscreen);
-
 	void handleEvents();
 	void update();
 	bool running() { return isRunning; }
 	void render();
 	void clean();
-
+	bool inStartMenu();
 
 	static SDL_Renderer *renderer;
 	static SDL_Event event;
@@ -41,4 +40,5 @@ public:
 
 private:
 	SDL_Window *window;
+	bool inStart = true;
 };

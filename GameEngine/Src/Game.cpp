@@ -34,6 +34,11 @@ Game::Game()
 Game::~Game()
 {}
 
+bool Game::inStartMenu() 
+{
+	return inStart;
+}
+
 void Game::init(const char* title, int width, int height, bool fullscreen)
 {
 	int flags = 0;
@@ -65,10 +70,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	startScreen.addComponent<TransformComponent>(0, 0, 640, 800, 1);
 	startScreen.addComponent<SpriteComponent>("startScreen", false, true);
 	startScreen.addGroup(groupScreenOverlays);
-	bool inStartMenu = false;
-	while (inStartMenu) {
 
-	}
 
 	assets->AddTexture("terrain", "assets/room_1_tileset.png");
 	assets->AddTexture("player", "assets/character_spritesheet.png");
