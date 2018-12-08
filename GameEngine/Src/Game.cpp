@@ -69,6 +69,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	assets->AddTexture("startScreen", "assets/StartScreen.png");
 	startScreen.addComponent<TransformComponent>(0, 0, 640, 800, 1);
 	startScreen.addComponent<SpriteComponent>("startScreen", false, true);
+	startScreen.addComponent<KeyboardController>();
 	startScreen.addGroup(groupScreenOverlays);
 
 
@@ -127,6 +128,11 @@ Vector2D lastPlayerPos;
 
 void Game::update()
 {
+	if (screens.size() > 0) {
+		screens[0]->update();
+		manager.refresh();
+		return;
+	}
 
 	if (dialogueEntity.isConnected()) {
 		player.getComponent<KeyboardController>().receiveInput = false;
@@ -191,6 +197,16 @@ void Game::render()
 {
 	SDL_RenderClear(renderer);
 
+	for (auto& s : screens)
+	{
+		s->draw();
+	}
+	if (screens.size() > 0) {
+		SDL_RenderPresent(renderer);
+		return;
+	}
+
+
 	for (auto& t : tiles)
 	{
 		t->draw();
@@ -214,10 +230,6 @@ void Game::render()
 	for (auto& d : dialogues)
 	{
 		d->draw();
-	}
-	for (auto& s : screens)
-	{
-		s->draw();
 	}
 
 	label.draw();

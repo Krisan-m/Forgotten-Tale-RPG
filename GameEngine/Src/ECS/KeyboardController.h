@@ -24,51 +24,85 @@ public:
 
 	void update() override
 	{
+		//handle menu screens
+		if (entity->hasGroup(Game::groupScreenOverlays)) {
+			handleStartScreen();
+			return;
+		}
+
 		// case when dialogue is opened
 		if (!receiveInput || (entity->hasGroup(Game::groupDialogues) && entity->isConnected())) {
-			if (entity->hasGroup(Game::groupPlayers)) {
-				if(transform->velocity.x == 1) sprite->Play("Idle Side");
-				else if (transform->velocity.x == -1) {
-					sprite->Play("Idle Side");
-					sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
-				}
-				else if (transform->velocity.y == 1) sprite->Play("Idle Front");
-				else if (transform->velocity.y == -1) sprite->Play("Idle Back");
-				transform->velocity.x = 0;
-				transform->velocity.y = 0;
-			}
-			if (Game::event.type == SDL_KEYDOWN)
-				switch (Game::event.key.keysym.sym)
-				{
-				case SDLK_z:
-					// go to next dialog
-					if (entity->hasGroup(Game::groupDialogues)) {
-						dialogue->nextScreen();
-					}
-					break;
-				default:
-					break;
-				}
+			handleOpenDialogue();
 			return;
 		}
 
 		// deal with interactive objects
 		if (entity->hasGroup(Game::groupInteractiveObjects)) {
-			if (Game::event.type == SDL_KEYDOWN) {
-				switch (Game::event.key.keysym.sym)
-				{
-				case SDLK_z:
-					if (interactiveObject->contactWithPlayer == true) {
-						interactiveObject->action();
-					}
-					break;
-				default:
-					break;
-				}
-			}
+			handleInteractiveObjects();
 			return;
 		}
-		if (Game::event.type == SDL_KEYDOWN && entity->hasGroup(Game::groupPlayers))
+
+		// deal with player input
+		if (entity->hasGroup(Game::groupPlayers)) {
+			handlePlayerObject();
+			return;
+		}
+	}
+
+	void handleStartScreen() 
+	{
+		std::cout << "hih" << std::endl;
+	}
+
+	void handleOpenDialogue() 
+	{
+		if (entity->hasGroup(Game::groupPlayers)) {
+			if (transform->velocity.x == 1) sprite->Play("Idle Side");
+			else if (transform->velocity.x == -1) {
+				sprite->Play("Idle Side");
+				sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
+			}
+			else if (transform->velocity.y == 1) sprite->Play("Idle Front");
+			else if (transform->velocity.y == -1) sprite->Play("Idle Back");
+			transform->velocity.x = 0;
+			transform->velocity.y = 0;
+		}
+		if (Game::event.type == SDL_KEYDOWN)
+			switch (Game::event.key.keysym.sym)
+			{
+			case SDLK_z:
+				// go to next dialog
+				if (entity->hasGroup(Game::groupDialogues)) {
+					dialogue->nextScreen();
+				}
+				break;
+			default:
+				break;
+			}
+		return;
+
+	}
+
+	void handleInteractiveObjects()
+	{
+		if (Game::event.type == SDL_KEYDOWN) {
+			switch (Game::event.key.keysym.sym)
+			{
+			case SDLK_z:
+				if (interactiveObject->contactWithPlayer == true) {
+					interactiveObject->action();
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return;
+	}
+
+	void handlePlayerObject() 
+	{
+		if (Game::event.type == SDL_KEYDOWN)
 		{
 			switch (Game::event.key.keysym.sym)
 			{
@@ -99,13 +133,13 @@ public:
 			}
 		}
 
-		if (Game::event.type == SDL_KEYUP && entity->hasGroup(Game::groupPlayers))
+		if (Game::event.type == SDL_KEYUP)
 		{
 			switch (Game::event.key.keysym.sym)
 			{
 			case SDLK_UP:
 				transform->velocity.y = 0;
-				if(transform->velocity.x == 0) sprite->Play("Idle Back");
+				if (transform->velocity.x == 0) sprite->Play("Idle Back");
 				break;
 			case SDLK_LEFT:
 				transform->velocity.x = 0;
@@ -127,8 +161,6 @@ public:
 			default:
 				break;
 			}
-
 		}
 	}
-
 };
