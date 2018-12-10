@@ -51,7 +51,17 @@ public:
 
 	void handleStartScreen() 
 	{
-		std::cout << "hih" << std::endl;
+		if (Game::event.type == SDL_KEYDOWN)
+			switch (Game::event.key.keysym.sym)
+			{
+			case SDLK_z:
+				// Close the start screen
+				entity->destroy();
+				// TODO: Fade in screen to the game screen.
+				break;
+			default:
+				break;
+			}
 	}
 
 	void handleOpenDialogue() 
