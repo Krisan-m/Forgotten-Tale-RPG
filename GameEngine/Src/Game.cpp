@@ -65,20 +65,22 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		std::cout << "FAILED: Unable to load SDL_TTF" << std::endl;
 	}
 
-	//run start menu
-	assets->AddTexture("startScreen", "assets/StartScreen.png");
-	startScreen.addComponent<TransformComponent>(0, 0, 640, 800, 1);
-	startScreen.addComponent<SpriteComponent>("startScreen", false, true);
-	startScreen.addComponent<KeyboardController>();
-	startScreen.addGroup(groupScreenOverlays);
-
-
+	// Add textures/fonts
 	assets->AddTexture("terrain", "assets/room_1_tileset.png");
 	assets->AddTexture("player", "assets/character_spritesheet.png");
 	assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
-	
 	assets->AddTexture("dialogue", "assets/DialogueBackground.png");
 	assets->AddFont("Determination", "assets/Determination.ttf", 32);
+
+	// Set up start screen
+	assets->AddTexture("startScreen", "assets/StartScreen.png");
+	startScreen.addComponent<TransformComponent>(0, 0, 640, 800, 1);
+	startScreen.addComponent<SpriteComponent>("startScreen", false, true);
+	SDL_Color white = { 255, 255, 255 };
+	startScreen.addComponent<UILabel>(255, 280, "Press Z to start", "Determination", white);
+	startScreen.addComponent<KeyboardController>();
+	startScreen.addGroup(groupScreenOverlays);
+
 
 	fire.addComponent<TransformComponent>(1250, 0, 64, 32, scale);
 	fire.addComponent<ColliderComponent>("fireplace");
