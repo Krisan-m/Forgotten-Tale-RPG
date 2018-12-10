@@ -12,6 +12,7 @@ public:
 	SpriteComponent *sprite;
 	DialogueComponent *dialogue;
 	InteractiveComponent *interactiveObject;
+	UILabel *label;
 	bool receiveInput = true;
 
 	void init() override
@@ -20,6 +21,7 @@ public:
 		sprite = &entity->getComponent<SpriteComponent>();
 		dialogue = &entity->getComponent<DialogueComponent>();
 		interactiveObject = &entity->getComponent<InteractiveComponent>();
+		label = &entity->getComponent<UILabel>();
 	}
 
 	void update() override
@@ -56,7 +58,12 @@ public:
 			{
 			case SDLK_z:
 				// Close the start screen
-				entity->destroy();
+				if (!label->fullyDrawn()) {
+					label->fullyDraw();
+				}
+				else {
+					entity->destroy();
+				}
 				// TODO: Fade in screen to the game screen.
 				break;
 			default:
