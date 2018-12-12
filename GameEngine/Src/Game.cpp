@@ -76,8 +76,8 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	assets->AddTexture("startScreen", "assets/StartScreen.png");
 	startScreen.addComponent<TransformComponent>(0, 0, 640, 800, 1);
 	startScreen.addComponent<SpriteComponent>("startScreen", false, true);
-	SDL_Color white = { 255, 255, 255 };
-	startScreen.addComponent<UILabel>(255, 280, "Press Z to start", "Determination", white);
+	SDL_Color yellow = { 255, 255, 0 };
+	startScreen.addComponent<UILabel>(255, 280, "Press Z to start", "Determination", yellow, true);
 	startScreen.addComponent<KeyboardController>();
 	startScreen.addGroup(groupScreenOverlays);
 

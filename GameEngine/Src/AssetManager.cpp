@@ -13,7 +13,7 @@ void AssetManager::CreateDialogue(Vector2D pos, std::string id, Entity& dialogue
 	dialogue.addComponent<TransformComponent>(pos.x, pos.y, 180, 620, 1);
 	dialogue.addComponent<SpriteComponent>(id, false, true);
 	SDL_Color white = { 255, 255, 255 };
-	dialogue.addComponent<UILabel>(pos.x + 20, 460, text, "Determination", white);
+	dialogue.addComponent<UILabel>(pos.x + 20, 460, text, "Determination", white, false);
 	dialogue.addComponent<DialogueComponent>();
 	dialogue.addComponent<KeyboardController>();
 	dialogue.addGroup(Game::groupDialogues);
