@@ -26,6 +26,7 @@ auto& player(manager.addEntity());
 auto& label(manager.addEntity());
 auto& dialogueEntity(manager.addEntity());
 auto& fire(manager.addEntity());
+auto& bed(manager.addEntity());
 auto& startScreen(manager.addEntity());
 
 Game::Game()
@@ -69,6 +70,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	assets->AddTexture("terrain", "assets/room_1_tileset.png");
 	assets->AddTexture("player", "assets/character_spritesheet.png");
 	assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
+	assets->AddTexture("bed", "assets/bed.png");
 	assets->AddTexture("dialogue", "assets/DialogueBackground.png");
 	assets->AddFont("Determination", "assets/Determination.ttf", 32);
 
@@ -90,6 +92,14 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	fire.addComponent<KeyboardController>();
 	fire.addGroup(groupTerrainColliders);
 	fire.addGroup(groupInteractiveObjects);
+
+	bed.addComponent<TransformComponent>(1500, 100, 50, 32, scale);
+	bed.addComponent<ColliderComponent>("bed");
+	bed.addComponent<InteractiveComponent>("You are well rested already.");
+	bed.addComponent<SpriteComponent>("bed");
+	bed.addComponent<KeyboardController>();
+	bed.addGroup(groupTerrainColliders);
+	bed.addGroup(groupInteractiveObjects);
 
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
