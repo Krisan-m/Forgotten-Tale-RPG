@@ -27,6 +27,7 @@ auto& label(manager.addEntity());
 auto& dialogueEntity(manager.addEntity());
 auto& fire(manager.addEntity());
 auto& bed(manager.addEntity());
+auto& cabinet(manager.addEntity());
 auto& startScreen(manager.addEntity());
 
 Game::Game()
@@ -71,6 +72,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	assets->AddTexture("player", "assets/character_spritesheet.png");
 	assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
 	assets->AddTexture("bed", "assets/bed.png");
+	assets->AddTexture("cabinet", "assets/cabinet.png");
 	assets->AddTexture("dialogue", "assets/DialogueBackground.png");
 	assets->AddFont("Determination", "assets/Determination.ttf", 32);
 
@@ -100,6 +102,15 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	bed.addComponent<KeyboardController>();
 	bed.addGroup(groupTerrainColliders);
 	bed.addGroup(groupInteractiveObjects);
+
+	cabinet.addComponent<TransformComponent>(1020, 10, 52, 31, scale);
+	cabinet.addComponent<ColliderComponent>("cabinet");
+	cabinet.addComponent<InteractiveComponent>("It is locked. Don't you remember locking it?");
+	cabinet.addComponent<SpriteComponent>("cabinet");
+	cabinet.addComponent<KeyboardController>();
+	cabinet.addGroup(groupTerrainColliders);
+	cabinet.addGroup(groupInteractiveObjects);
+
 
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
