@@ -41,6 +41,16 @@ bool Game::inStartMenu()
 	return inStart;
 }
 
+void addInteractiveObject(Entity& e, int xpos, int ypos, int height, int width, int scale, std::string id, std::string dialogue) {
+	e.addComponent<TransformComponent>(xpos, ypos, height, width, scale);
+	e.addComponent<ColliderComponent>(id);
+	e.addComponent<InteractiveComponent>(dialogue);
+	e.addComponent<SpriteComponent>(id);
+	e.addComponent<KeyboardController>();
+	e.addGroup(Game::groupTerrainColliders);
+	e.addGroup(Game::groupInteractiveObjects);
+}
+
 void Game::init(const char* title, int width, int height, bool fullscreen)
 {
 	int flags = 0;
@@ -85,7 +95,6 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	startScreen.addComponent<KeyboardController>();
 	startScreen.addGroup(groupScreenOverlays);
 
-
 	fire.addComponent<TransformComponent>(1250, 0, 64, 32, scale);
 	fire.addComponent<ColliderComponent>("fireplace");
 	fire.addComponent<InteractiveComponent>("The fire is almost out. It needs some wood.");
@@ -95,22 +104,8 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	fire.addGroup(groupTerrainColliders);
 	fire.addGroup(groupInteractiveObjects);
 
-	bed.addComponent<TransformComponent>(1500, 100, 50, 32, scale);
-	bed.addComponent<ColliderComponent>("bed");
-	bed.addComponent<InteractiveComponent>("You are well rested already.");
-	bed.addComponent<SpriteComponent>("bed");
-	bed.addComponent<KeyboardController>();
-	bed.addGroup(groupTerrainColliders);
-	bed.addGroup(groupInteractiveObjects);
-
-	cabinet.addComponent<TransformComponent>(1020, 10, 52, 31, scale);
-	cabinet.addComponent<ColliderComponent>("cabinet");
-	cabinet.addComponent<InteractiveComponent>("It is locked. Don't you remember locking it?");
-	cabinet.addComponent<SpriteComponent>("cabinet");
-	cabinet.addComponent<KeyboardController>();
-	cabinet.addGroup(groupTerrainColliders);
-	cabinet.addGroup(groupInteractiveObjects);
-
+	addInteractiveObject(bed, 1500, 100, 50, 32, scale, "bed", "You are well rested already.");
+	addInteractiveObject(cabinet, 1020, 10, 52, 31, scale, "cabinet", "It is locked. Don't you remember locking it?");
 
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
