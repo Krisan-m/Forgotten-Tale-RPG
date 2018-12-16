@@ -41,7 +41,8 @@ bool Game::inStartMenu()
 	return inStart;
 }
 
-void addInteractiveObject(Entity& e, int xpos, int ypos, int height, int width, int scale, std::string id, std::string dialogue) {
+void addInteractiveObject(Entity& e, int xpos, int ypos, int height, int width, int scale, std::string id, std::string dialogue) 
+{
 	e.addComponent<TransformComponent>(xpos, ypos, height, width, scale);
 	e.addComponent<ColliderComponent>(id);
 	e.addComponent<InteractiveComponent>(dialogue);
@@ -49,6 +50,51 @@ void addInteractiveObject(Entity& e, int xpos, int ypos, int height, int width, 
 	e.addComponent<KeyboardController>();
 	e.addGroup(Game::groupTerrainColliders);
 	e.addGroup(Game::groupInteractiveObjects);
+}
+
+void setupMapOne()
+{
+	// Add textures/fonts
+	Game::assets->AddTexture("terrain", "assets/room_1_tileset.png");
+	Game::assets->AddTexture("player", "assets/character_spritesheet.png");
+	Game::assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
+	Game::assets->AddTexture("bed", "assets/bed.png");
+	Game::assets->AddTexture("cabinet", "assets/cabinet.png");
+	Game::assets->AddTexture("dialogue", "assets/DialogueBackground.png");
+	Game::assets->AddFont("Determination", "assets/Determination.ttf", 32);
+
+	// Set up start screen
+	Game::assets->AddTexture("startScreen", "assets/StartScreen.png");
+	startScreen.addComponent<TransformComponent>(0, 0, 640, 800, 1);
+	startScreen.addComponent<SpriteComponent>("startScreen", false, true);
+	SDL_Color yellow = { 255, 255, 0 };
+	startScreen.addComponent<UILabel>(255, 280, "Press Z to start", "Determination", yellow, true);
+	startScreen.addComponent<KeyboardController>();
+	startScreen.addGroup(Game::groupScreenOverlays);
+
+	fire.addComponent<TransformComponent>(1250, 0, 64, 32, scale);
+	fire.addComponent<ColliderComponent>("fireplace");
+	fire.addComponent<InteractiveComponent>("The fire is almost out. It needs some wood.");
+	std::vector<int> animationIndexFrame{ 7 };  //animations, frames
+	fire.addComponent<SpriteComponent>("fireplace", true, animationIndexFrame);
+	fire.addComponent<KeyboardController>();
+	fire.addGroup(Game::groupTerrainColliders);
+	fire.addGroup(Game::groupInteractiveObjects);
+
+	addInteractiveObject(bed, 1500, 100, 50, 32, scale, "bed", "You are well rested already.");
+	addInteractiveObject(cabinet, 1020, 10, 52, 31, scale, "cabinet", "It is locked. Don't you remember locking it?");
+
+	map = new Map("terrain", scale, 16);
+	map->LoadMap("assets/room_1.map", 50, 40);
+
+	player.addComponent<TransformComponent>(1250, 250, 31, 19, scale);
+	player.addComponent<SpriteComponent>("player", true);
+	player.addComponent<ColliderComponent>("player");
+	player.addComponent<KeyboardController>();
+	player.addGroup(Game::groupPlayers);
+
+	Game::assets->CreateDialogue(Vector2D(screenX / 2 - 290, 450), "dialogue", dialogueEntity, "You have awoken from a deep slumber.");
+
 }
 
 void Game::init(const char* title, int width, int height, bool fullscreen)
@@ -77,46 +123,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		std::cout << "FAILED: Unable to load SDL_TTF" << std::endl;
 	}
 
-	// Add textures/fonts
-	assets->AddTexture("terrain", "assets/room_1_tileset.png");
-	assets->AddTexture("player", "assets/character_spritesheet.png");
-	assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
-	assets->AddTexture("bed", "assets/bed.png");
-	assets->AddTexture("cabinet", "assets/cabinet.png");
-	assets->AddTexture("dialogue", "assets/DialogueBackground.png");
-	assets->AddFont("Determination", "assets/Determination.ttf", 32);
-
-	// Set up start screen
-	assets->AddTexture("startScreen", "assets/StartScreen.png");
-	startScreen.addComponent<TransformComponent>(0, 0, 640, 800, 1);
-	startScreen.addComponent<SpriteComponent>("startScreen", false, true);
-	SDL_Color yellow = { 255, 255, 0 };
-	startScreen.addComponent<UILabel>(255, 280, "Press Z to start", "Determination", yellow, true);
-	startScreen.addComponent<KeyboardController>();
-	startScreen.addGroup(groupScreenOverlays);
-
-	fire.addComponent<TransformComponent>(1250, 0, 64, 32, scale);
-	fire.addComponent<ColliderComponent>("fireplace");
-	fire.addComponent<InteractiveComponent>("The fire is almost out. It needs some wood.");
-	std::vector<int> animationIndexFrame{7};  //animations, frames
-	fire.addComponent<SpriteComponent>("fireplace", true, animationIndexFrame);
-	fire.addComponent<KeyboardController>();
-	fire.addGroup(groupTerrainColliders);
-	fire.addGroup(groupInteractiveObjects);
-
-	addInteractiveObject(bed, 1500, 100, 50, 32, scale, "bed", "You are well rested already.");
-	addInteractiveObject(cabinet, 1020, 10, 52, 31, scale, "cabinet", "It is locked. Don't you remember locking it?");
-
-	map = new Map("terrain", scale, 16);
-	map->LoadMap("assets/room_1.map", 50, 40);
-
-	player.addComponent<TransformComponent>(1250, 250, 31, 19, scale);
-	player.addComponent<SpriteComponent>("player", true);
-	player.addComponent<ColliderComponent>("player");
-	player.addComponent<KeyboardController>();
-	player.addGroup(groupPlayers);
-
-	assets->CreateDialogue(Vector2D(screenX/2 - 290, 450), "dialogue", dialogueEntity, "You have awoken from a deep slumber.");
+	setupMapOne();
 }
 
 
