@@ -52,11 +52,21 @@ void addInteractiveObject(Entity& e, int xpos, int ypos, int height, int width, 
 	e.addGroup(Game::groupInteractiveObjects);
 }
 
+void setupPlayer()
+{
+	Game::assets->AddTexture("player", "assets/character_spritesheet.png");
+
+	player.addComponent<TransformComponent>(1250, 250, 31, 19, scale);
+	player.addComponent<SpriteComponent>("player", true);
+	player.addComponent<ColliderComponent>("player");
+	player.addComponent<KeyboardController>();
+	player.addGroup(Game::groupPlayers);
+}
+
 void setupMapOne()
 {
 	// Add textures/fonts
 	Game::assets->AddTexture("terrain", "assets/room_1_tileset.png");
-	Game::assets->AddTexture("player", "assets/character_spritesheet.png");
 	Game::assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
 	Game::assets->AddTexture("bed", "assets/bed.png");
 	Game::assets->AddTexture("cabinet", "assets/cabinet.png");
@@ -86,12 +96,6 @@ void setupMapOne()
 
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
-
-	player.addComponent<TransformComponent>(1250, 250, 31, 19, scale);
-	player.addComponent<SpriteComponent>("player", true);
-	player.addComponent<ColliderComponent>("player");
-	player.addComponent<KeyboardController>();
-	player.addGroup(Game::groupPlayers);
 
 	Game::assets->CreateDialogue(Vector2D(screenX / 2 - 290, 450), "dialogue", dialogueEntity, "You have awoken from a deep slumber.");
 
@@ -123,6 +127,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		std::cout << "FAILED: Unable to load SDL_TTF" << std::endl;
 	}
 
+	setupPlayer();
 	setupMapOne();
 }
 
