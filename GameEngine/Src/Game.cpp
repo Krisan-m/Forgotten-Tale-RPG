@@ -101,6 +101,13 @@ void setupMapOne()
 
 }
 
+void setupMapTwo() 
+{
+	Game::assets->AddTexture("terrain2", "assets/corridor_2_tileset.png");
+	map = new Map("terrain2", scale, 16);
+	map->LoadMap("assets/corridor_2.map", 60, 40);
+}
+
 void Game::init(const char* title, int width, int height, bool fullscreen)
 {
 	int flags = 0;
@@ -129,6 +136,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	setupPlayer();
 	setupMapOne();
+	//setupMapTwo();
 }
 
 
