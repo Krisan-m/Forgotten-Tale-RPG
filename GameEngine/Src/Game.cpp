@@ -200,6 +200,18 @@ void Game::update()
 		}
 	}
 
+	// player collision with portal colliders
+	for (auto& c : portalColliders)
+	{
+		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+		if (Collision::AABB(cCol, playerCol))
+		{
+			std::cout << "move to next map" << std::endl;
+			setupMapTwo();
+			break;
+		}
+	}
+
 	//check if player has collision with any of the colliders on the map
 	bool wasCollision = false;
 	for (auto& c : terrainColliders)
