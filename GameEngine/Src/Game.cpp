@@ -52,6 +52,8 @@ void addInteractiveObject(Entity& e, int xpos, int ypos, int height, int width, 
 	e.addGroup(Game::groupInteractiveObjects);
 }
 
+void clearMap();
+
 void setupPlayer()
 {
 	Game::assets->AddTexture("player", "assets/character_spritesheet.png");
@@ -103,7 +105,12 @@ void setupMapOne()
 
 void setupMapTwo() 
 {
+	player.getComponent<TransformComponent>().position.x = 1250;
+	player.getComponent<TransformComponent>().position.y = 250;
+
 	Game::assets->AddTexture("terrain2", "assets/corridor_2_tileset.png");
+
+	clearMap();
 	map = new Map("terrain2", scale, 16);
 	map->LoadMap("assets/corridor_2.map", 60, 40);
 }
@@ -263,7 +270,7 @@ void Game::render()
 	}
 	for (auto& c : terrainColliders)
 	{
-		//c->draw();
+		c->draw();
 	}
 	for (auto& pc : portalColliders)
 	{
@@ -291,4 +298,20 @@ void Game::clean()
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
+}
+
+void clearMap()
+{
+	for (auto& t : tiles)
+	{
+		t->destroy();
+	}
+	for (auto& c : terrainColliders)
+	{
+		c->destroy();
+	}
+	for (auto& p : portalColliders)
+	{
+		p->destroy();
+	}
 }

@@ -13,7 +13,6 @@ Map::Map(std::string tID, int ms, int ts) : texID(tID), mapScale(ms), tileSize(t
 
 Map::~Map()
 {
-
 }
 
 void Map::LoadMap(std::string path, int sizeX, int sizeY)
