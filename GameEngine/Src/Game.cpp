@@ -187,13 +187,13 @@ void Game::update()
 		player.getComponent<KeyboardController>().receiveInput = true;
 		//player.connect();
 	}
+
+	manager.refresh();
+	manager.update();
 		
 	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
 	Vector2D playerPos = player.getComponent<TransformComponent>().position;
 	Vector2D playerVel = player.getComponent<TransformComponent>().velocity;
-
-	manager.refresh();
-	manager.update();
 
 	//interactive objects 
 	for (auto& o : interactiveObjects)
@@ -204,18 +204,6 @@ void Game::update()
 		}
 		else {
 			o->getComponent<InteractiveComponent>().contactWithPlayer = false;
-		}
-	}
-
-	// player collision with portal colliders
-	for (auto& c : portalColliders)
-	{
-		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
-		if (Collision::AABB(cCol, playerCol))
-		{
-			std::cout << "move to next map" << std::endl;
-			setupMapTwo();
-			break;
 		}
 	}
 
@@ -232,6 +220,22 @@ void Game::update()
 		}
 	}
 	if (!wasCollision) lastPlayerPos = playerPos;
+
+
+
+	// player collision with portal colliders
+	for (auto& c : portalColliders)
+	{
+		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+		if (Collision::AABB(cCol, playerCol))
+		{
+			std::cout << "move to next map" << std::endl;
+			setupMapTwo();
+			player.getComponent<TransformComponent>().position = Vector2D(1250,250);
+			break;
+		}
+	}
+
 
 	//take away half of screen to keep player in middle
 	camera.x = player.getComponent<TransformComponent>().position.x - (screenX/2);
