@@ -10,6 +10,7 @@ public:
 
 	void AddTile(int srcX, int srcY, int xpos, int ypos);
 	void LoadMap(std::string path, int sizeX, int sizeY);
+	std::string mapName() { return texID; };
 
 
 

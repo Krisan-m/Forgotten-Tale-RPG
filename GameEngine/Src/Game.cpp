@@ -53,10 +53,26 @@ void addInteractiveObject(Entity& e, int xpos, int ypos, int height, int width, 
 }
 
 void clearMap();
+void accessMapPortal();
+
+void addTextures()
+{
+	// Add textures/fonts
+	Game::assets->AddTexture("player", "assets/character_spritesheet.png");
+	Game::assets->AddTexture("terrain", "assets/room_1_tileset.png");
+	Game::assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
+	Game::assets->AddTexture("bed", "assets/bed.png");
+	Game::assets->AddTexture("cabinet", "assets/cabinet.png");
+	Game::assets->AddTexture("dialogue", "assets/DialogueBackground.png");
+	Game::assets->AddFont("Determination", "assets/Determination.ttf", 32);
+	Game::assets->AddTexture("startScreen", "assets/StartScreen.png");
+
+	Game::assets->AddTexture("terrain2", "assets/corridor_2_tileset.png");
+
+}
 
 void setupPlayer()
 {
-	Game::assets->AddTexture("player", "assets/character_spritesheet.png");
 
 	player.addComponent<TransformComponent>(1250, 250, 31, 19, scale);
 	player.addComponent<SpriteComponent>("player", true);
@@ -65,24 +81,19 @@ void setupPlayer()
 	player.addGroup(Game::groupPlayers);
 }
 
-void setupMapOne()
+void setupStartScreen()
 {
-	// Add textures/fonts
-	Game::assets->AddTexture("terrain", "assets/room_1_tileset.png");
-	Game::assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
-	Game::assets->AddTexture("bed", "assets/bed.png");
-	Game::assets->AddTexture("cabinet", "assets/cabinet.png");
-	Game::assets->AddTexture("dialogue", "assets/DialogueBackground.png");
-	Game::assets->AddFont("Determination", "assets/Determination.ttf", 32);
-
 	// Set up start screen
-	Game::assets->AddTexture("startScreen", "assets/StartScreen.png");
 	startScreen.addComponent<TransformComponent>(0, 0, 640, 800, 1);
 	startScreen.addComponent<SpriteComponent>("startScreen", false, true);
 	SDL_Color yellow = { 255, 255, 0 };
 	startScreen.addComponent<UILabel>(255, 280, "Press Z to start", "Determination", yellow, true);
 	startScreen.addComponent<KeyboardController>();
 	startScreen.addGroup(Game::groupScreenOverlays);
+}
+void setupMapOne()
+{
+	clearMap();
 
 	fire.addComponent<TransformComponent>(1250, 0, 64, 32, scale);
 	fire.addComponent<ColliderComponent>("fireplace");
@@ -95,7 +106,7 @@ void setupMapOne()
 
 	addInteractiveObject(bed, 1500, 100, 50, 32, scale, "bed", "You are well rested already.");
 	addInteractiveObject(cabinet, 1020, 10, 52, 31, scale, "cabinet", "It is locked. Don't you remember locking it?");
-
+	
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
 
@@ -105,10 +116,8 @@ void setupMapOne()
 
 void setupMapTwo() 
 {
-	player.getComponent<TransformComponent>().position.x = 1250;
+	player.getComponent<TransformComponent>().position.x = 300;
 	player.getComponent<TransformComponent>().position.y = 250;
-
-	Game::assets->AddTexture("terrain2", "assets/corridor_2_tileset.png");
 
 	clearMap();
 	map = new Map("terrain2", scale, 16);
@@ -141,7 +150,9 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		std::cout << "FAILED: Unable to load SDL_TTF" << std::endl;
 	}
 
+	addTextures();
 	setupPlayer();
+	setupStartScreen();
 	setupMapOne();
 	//setupMapTwo();
 }
@@ -229,9 +240,9 @@ void Game::update()
 		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
 		if (Collision::AABB(cCol, playerCol))
 		{
-			std::cout << "move to next map" << std::endl;
-			setupMapTwo();
-			player.getComponent<TransformComponent>().position = Vector2D(1250,250);
+			accessMapPortal();
+			//setupMapTwo();
+			//player.getComponent<TransformComponent>().position = Vector2D(1250,250);
 			break;
 		}
 	}
@@ -274,7 +285,7 @@ void Game::render()
 	}
 	for (auto& c : terrainColliders)
 	{
-		c->draw();
+		//c->draw();
 	}
 	for (auto& pc : portalColliders)
 	{
@@ -317,5 +328,18 @@ void clearMap()
 	for (auto& p : portalColliders)
 	{
 		p->destroy();
+	}
+}
+
+void accessMapPortal()
+{
+	std::string mapName = map->mapName();
+	if (mapName == "terrain2") 
+	{
+		setupMapOne();
+	}
+	else if (mapName == "terrain")
+	{
+		setupMapTwo();
 	}
 }
