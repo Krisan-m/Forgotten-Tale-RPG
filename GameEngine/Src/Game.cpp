@@ -7,6 +7,7 @@
 #include "AssetManager.h"
 #include <sstream>
 #include <vector>
+#include <unordered_map>
 
 Map* map;
 Manager manager;
@@ -21,14 +22,7 @@ SDL_Rect Game::camera = {0, 0, screenX, screenY}; //width and height of camera
 AssetManager* Game::assets = new AssetManager(&manager);
 
 bool Game::isRunning = false;
-
-auto& player(manager.addEntity());
-auto& label(manager.addEntity());
-auto& dialogueEntity(manager.addEntity());
-auto& fire(manager.addEntity());
-auto& bed(manager.addEntity());
-auto& cabinet(manager.addEntity());
-auto& startScreen(manager.addEntity());
+std::unordered_map<std::string, Entity*> entities;
 
 Game::Game()
 {}
@@ -73,51 +67,50 @@ void addTextures()
 
 void setupPlayer()
 {
-
-	player.addComponent<TransformComponent>(1250, 250, 31, 19, scale);
-	player.addComponent<SpriteComponent>("player", true);
-	player.addComponent<ColliderComponent>("player");
-	player.addComponent<KeyboardController>();
-	player.addGroup(Game::groupPlayers);
+	entities["player"]->addComponent<TransformComponent>(1250, 250, 31, 19, scale);
+	entities["player"]->addComponent<SpriteComponent>("player", true);
+	entities["player"]->addComponent<ColliderComponent>("player");
+	entities["player"]->addComponent<KeyboardController>();
+	entities["player"]->addGroup(Game::groupPlayers);
 }
 
 void setupStartScreen()
 {
 	// Set up start screen
-	startScreen.addComponent<TransformComponent>(0, 0, 640, 800, 1);
-	startScreen.addComponent<SpriteComponent>("startScreen", false, true);
+	entities["startScreen"]->addComponent<TransformComponent>(0, 0, 640, 800, 1);
+	entities["startScreen"]->addComponent<SpriteComponent>("startScreen", false, true);
 	SDL_Color yellow = { 255, 255, 0 };
-	startScreen.addComponent<UILabel>(255, 280, "Press Z to start", "Determination", yellow, true);
-	startScreen.addComponent<KeyboardController>();
-	startScreen.addGroup(Game::groupScreenOverlays);
+	entities["startScreen"]->addComponent<UILabel>(255, 280, "Press Z to start", "Determination", yellow, true);
+	entities["startScreen"]->addComponent<KeyboardController>();
+	entities["startScreen"]->addGroup(Game::groupScreenOverlays);
 }
 void setupMapOne()
 {
 	clearMap();
 
-	fire.addComponent<TransformComponent>(1250, 0, 64, 32, scale);
-	fire.addComponent<ColliderComponent>("fireplace");
-	fire.addComponent<InteractiveComponent>("The fire is almost out. It needs some wood.");
+	entities["fire"]->addComponent<TransformComponent>(1250, 0, 64, 32, scale);
+	entities["fire"]->addComponent<ColliderComponent>("fireplace");
+	entities["fire"]->addComponent<InteractiveComponent>("The fire is almost out. It needs some wood.");
 	std::vector<int> animationIndexFrame{ 7 };  //animations, frames
-	fire.addComponent<SpriteComponent>("fireplace", true, animationIndexFrame);
-	fire.addComponent<KeyboardController>();
-	fire.addGroup(Game::groupTerrainColliders);
-	fire.addGroup(Game::groupInteractiveObjects);
+	entities["fire"]->addComponent<SpriteComponent>("fireplace", true, animationIndexFrame);
+	entities["fire"]->addComponent<KeyboardController>();
+	entities["fire"]->addGroup(Game::groupTerrainColliders);
+	entities["fire"]->addGroup(Game::groupInteractiveObjects);
 
-	addInteractiveObject(bed, 1500, 100, 50, 32, scale, "bed", "You are well rested already.");
-	addInteractiveObject(cabinet, 1020, 10, 52, 31, scale, "cabinet", "It is locked. Don't you remember locking it?");
+	addInteractiveObject(*entities["bed"], 1500, 100, 50, 32, scale, "bed", "You are well rested already.");
+	addInteractiveObject(*entities["cabinet"], 1020, 10, 52, 31, scale, "cabinet", "It is locked. Don't you remember locking it?");
 	
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
 
-	Game::assets->CreateDialogue(Vector2D(screenX / 2 - 290, 450), "dialogue", dialogueEntity, "You have awoken from a deep slumber.");
+	Game::assets->CreateDialogue(Vector2D(screenX / 2 - 290, 450), "dialogue", *entities["dialogueEntity"], "You have awoken from a deep slumber.");
 
 }
 
 void setupMapTwo() 
 {
-	player.getComponent<TransformComponent>().position.x = 300;
-	player.getComponent<TransformComponent>().position.y = 250;
+	entities["player"]->getComponent<TransformComponent>().position.x = 300;
+	entities["player"]->getComponent<TransformComponent>().position.y = 250;
 
 	clearMap();
 	map = new Map("terrain2", scale, 16);
@@ -150,13 +143,21 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		std::cout << "FAILED: Unable to load SDL_TTF" << std::endl;
 	}
 
+
+	entities["player"] = &manager.addEntity();
+	entities["label"] = &manager.addEntity();
+	entities["dialogueEntity"] = &manager.addEntity();
+	entities["fire"] = &manager.addEntity();
+	entities["bed"] = &manager.addEntity();
+	entities["cabinet"] = &manager.addEntity();
+	entities["startScreen"] = &manager.addEntity();
+
 	addTextures();
 	setupPlayer();
 	setupStartScreen();
 	setupMapOne();
 	//setupMapTwo();
 }
-
 
 auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
@@ -190,21 +191,21 @@ void Game::update()
 		return;
 	}
 
-	if (dialogueEntity.isConnected()) {
-		player.getComponent<KeyboardController>().receiveInput = false;
+	if (entities["dialogueEntity"]->isConnected()) {
+		entities["player"]->getComponent<KeyboardController>().receiveInput = false;
 		//player.disconnect();
 	}
 	else {
-		player.getComponent<KeyboardController>().receiveInput = true;
+		entities["player"]->getComponent<KeyboardController>().receiveInput = true;
 		//player.connect();
 	}
 
 	manager.refresh();
 	manager.update();
 		
-	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
-	Vector2D playerPos = player.getComponent<TransformComponent>().position;
-	Vector2D playerVel = player.getComponent<TransformComponent>().velocity;
+	SDL_Rect playerCol = entities["player"]->getComponent<ColliderComponent>().collider;
+	Vector2D playerPos = entities["player"]->getComponent<TransformComponent>().position;
+	Vector2D playerVel = entities["player"]->getComponent<TransformComponent>().velocity;
 
 	//interactive objects 
 	for (auto& o : interactiveObjects)
@@ -226,7 +227,7 @@ void Game::update()
 		if (Collision::AABB(cCol, playerCol))
 		{
 			// set player to last position that isn't colliding with anything
-			player.getComponent<TransformComponent>().position = lastPlayerPos;
+			entities["player"]->getComponent<TransformComponent>().position = lastPlayerPos;
 			wasCollision = true;
 		}
 	}
@@ -249,8 +250,8 @@ void Game::update()
 
 
 	//take away half of screen to keep player in middle
-	camera.x = player.getComponent<TransformComponent>().position.x - (screenX/2);
-	camera.y = player.getComponent<TransformComponent>().position.y - (screenY/2);
+	camera.x = entities["player"]->getComponent<TransformComponent>().position.x - (screenX/2);
+	camera.y = entities["player"]->getComponent<TransformComponent>().position.y - (screenY/2);
 	
 	// check bounds to avoid showing null map
 	// TODO: Make it work for fullscreen
@@ -263,7 +264,6 @@ void Game::update()
 	if (camera.y > screenY * scale - screenY)
 		camera.y = screenY * scale - screenY;
 }
-
 
 void Game::render()
 {
@@ -304,7 +304,7 @@ void Game::render()
 		d->draw();
 	}
 
-	label.draw();
+	entities["label"]->draw();
 	SDL_RenderPresent(renderer);
 }
 
