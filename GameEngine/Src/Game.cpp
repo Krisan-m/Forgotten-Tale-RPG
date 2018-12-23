@@ -67,6 +67,7 @@ void addTextures()
 
 void setupPlayer()
 {
+	entities["player"] = &manager.addEntity();
 	entities["player"]->addComponent<TransformComponent>(1250, 250, 31, 19, scale);
 	entities["player"]->addComponent<SpriteComponent>("player", true);
 	entities["player"]->addComponent<ColliderComponent>("player");
@@ -77,6 +78,7 @@ void setupPlayer()
 void setupStartScreen()
 {
 	// Set up start screen
+	entities["startScreen"] = &manager.addEntity();
 	entities["startScreen"]->addComponent<TransformComponent>(0, 0, 640, 800, 1);
 	entities["startScreen"]->addComponent<SpriteComponent>("startScreen", false, true);
 	SDL_Color yellow = { 255, 255, 0 };
@@ -87,6 +89,11 @@ void setupStartScreen()
 void setupMapOne()
 {
 	clearMap();
+	entities["dialogueEntity"] = &manager.addEntity();
+	entities["fire"] = &manager.addEntity();
+	entities["bed"] = &manager.addEntity();
+	entities["cabinet"] = &manager.addEntity();
+
 
 	entities["fire"]->addComponent<TransformComponent>(1250, 0, 64, 32, scale);
 	entities["fire"]->addComponent<ColliderComponent>("fireplace");
@@ -104,7 +111,6 @@ void setupMapOne()
 	map->LoadMap("assets/room_1.map", 50, 40);
 
 	Game::assets->CreateDialogue(Vector2D(screenX / 2 - 290, 450), "dialogue", *entities["dialogueEntity"], "You have awoken from a deep slumber.");
-
 }
 
 void setupMapTwo() 
@@ -143,20 +149,10 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		std::cout << "FAILED: Unable to load SDL_TTF" << std::endl;
 	}
 
-
-	entities["player"] = &manager.addEntity();
-	entities["label"] = &manager.addEntity();
-	entities["dialogueEntity"] = &manager.addEntity();
-	entities["fire"] = &manager.addEntity();
-	entities["bed"] = &manager.addEntity();
-	entities["cabinet"] = &manager.addEntity();
-	entities["startScreen"] = &manager.addEntity();
-
 	addTextures();
 	setupPlayer();
 	setupStartScreen();
 	setupMapOne();
-	//setupMapTwo();
 }
 
 auto& tiles(manager.getGroup(Game::groupMap));
@@ -304,7 +300,6 @@ void Game::render()
 		d->draw();
 	}
 
-	entities["label"]->draw();
 	SDL_RenderPresent(renderer);
 }
 
