@@ -88,6 +88,9 @@ void setupStartScreen()
 }
 void setupMapOne()
 {
+	entities["player"]->getComponent<TransformComponent>().position.x = 1250;
+	entities["player"]->getComponent<TransformComponent>().position.y = 250;
+	
 	clearMap();
 	entities["dialogueEntity"] = &manager.addEntity();
 	entities["fire"] = &manager.addEntity();
@@ -103,10 +106,10 @@ void setupMapOne()
 	entities["fire"]->addComponent<KeyboardController>();
 	entities["fire"]->addGroup(Game::groupTerrainColliders);
 	entities["fire"]->addGroup(Game::groupInteractiveObjects);
-
+	
 	addInteractiveObject(*entities["bed"], 1500, 100, 50, 32, scale, "bed", "You are well rested already.");
 	addInteractiveObject(*entities["cabinet"], 1020, 10, 52, 31, scale, "cabinet", "It is locked. Don't you remember locking it?");
-	
+
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
 
