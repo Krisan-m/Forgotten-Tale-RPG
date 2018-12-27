@@ -54,9 +54,6 @@ void addTextures()
 	// Add textures/fonts
 	Game::assets->AddTexture("player", "assets/character_spritesheet.png");
 	Game::assets->AddTexture("terrain", "assets/room_1_tileset.png");
-	Game::assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
-	Game::assets->AddTexture("bed", "assets/bed.png");
-	Game::assets->AddTexture("cabinet", "assets/cabinet.png");
 	Game::assets->AddTexture("dialogue", "assets/DialogueBackground.png");
 	Game::assets->AddFont("Determination", "assets/Determination.ttf", 32);
 	Game::assets->AddTexture("startScreen", "assets/StartScreen.png");
@@ -92,6 +89,13 @@ void setupMapOne()
 	entities["player"]->getComponent<TransformComponent>().position.y = 250;
 	
 	clearMap();
+	map = new Map("terrain", scale, 16);
+	map->LoadMap("assets/room_1.map", 50, 40);
+
+	Game::assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
+	Game::assets->AddTexture("bed", "assets/bed.png");
+	Game::assets->AddTexture("cabinet", "assets/cabinet.png");
+
 	entities["dialogueEntity"] = &manager.addEntity();
 	entities["fire"] = &manager.addEntity();
 	entities["bed"] = &manager.addEntity();
@@ -109,9 +113,6 @@ void setupMapOne()
 	
 	addInteractiveObject(*entities["bed"], 1500, 100, 50, 32, scale, "bed", "You are well rested already.");
 	addInteractiveObject(*entities["cabinet"], 1020, 10, 52, 31, scale, "cabinet", "It is locked. Don't you remember locking it?");
-
-	map = new Map("terrain", scale, 16);
-	map->LoadMap("assets/room_1.map", 50, 40);
 
 	Game::assets->CreateDialogue(Vector2D(screenX / 2 - 290, 450), "dialogue", *entities["dialogueEntity"], "You have awoken from a deep slumber.");
 }
@@ -315,9 +316,20 @@ void Game::clean()
 
 void clearMap()
 {
+	std::unordered_map<std::string, Entity*>::iterator itr = entities.begin();
+	while (itr != entities.end()) {
+		if (itr->first != "player" && itr->first != "dialogueEntity") {
+			itr->second->destroy();
+			itr = entities.erase(itr);
+		}
+		else {
+			++itr;
+		}
+	}
+
 	for (auto& t : tiles)
 	{
-		t->destroy();
+		//t->destroy();
 	}
 	for (auto& c : terrainColliders)
 	{
