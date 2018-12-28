@@ -57,7 +57,9 @@ void addTextures()
 	Game::assets->AddTexture("dialogue", "assets/DialogueBackground.png");
 	Game::assets->AddFont("Determination", "assets/Determination.ttf", 32);
 	Game::assets->AddTexture("startScreen", "assets/StartScreen.png");
-
+	Game::assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
+	Game::assets->AddTexture("bed", "assets/bed.png");
+	Game::assets->AddTexture("cabinet", "assets/cabinet.png");
 	Game::assets->AddTexture("terrain2", "assets/corridor_2_tileset.png");
 
 }
@@ -91,10 +93,6 @@ void setupMapOne()
 	clearMap();
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
-
-	Game::assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
-	Game::assets->AddTexture("bed", "assets/bed.png");
-	Game::assets->AddTexture("cabinet", "assets/cabinet.png");
 
 	entities["dialogueEntity"] = &manager.addEntity();
 	entities["fire"] = &manager.addEntity();
@@ -338,6 +336,10 @@ void clearMap()
 	for (auto& p : portalColliders)
 	{
 		p->destroy();
+	}
+	for (auto& o : interactiveObjects)
+	{
+		o->destroy();
 	}
 }
 
