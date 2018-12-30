@@ -30,6 +30,12 @@ SDL_Texture* AssetManager::GetTexture(std::string id)
 	return textures[id];
 }
 
+void AssetManager::RemoveTexture(std::string id)
+{
+	textures.erase(id);
+	return;
+}
+
 void AssetManager::AddFont(std::string id, std::string path, int fontSize)
 {
 	fonts.emplace(id, TTF_OpenFont(path.c_str(), fontSize));
