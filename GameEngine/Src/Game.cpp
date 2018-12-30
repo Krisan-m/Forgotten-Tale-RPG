@@ -58,6 +58,7 @@ void addTextures()
 	Game::assets->AddFont("Determination", "assets/Determination.ttf", 32);
 	Game::assets->AddTexture("startScreen", "assets/StartScreen.png");
 	Game::assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
+	Game::assets->AddTexture("fireplace1", "assets/fireplace_spritesheet.png");
 	Game::assets->AddTexture("bed", "assets/bed.png");
 	Game::assets->AddTexture("cabinet", "assets/cabinet.png");
 	Game::assets->AddTexture("terrain2", "assets/corridor_2_tileset.png");
@@ -93,21 +94,27 @@ void setupMapOne()
 	clearMap();
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
-
+	std::string fire = "fire";
+	std::string fireplace = "fireplace";
+	if (entities.find("fire") != entities.end()) {
+		fire = "fire1";
+		fireplace = "fireplace1";
+		entities.erase("fire");
+	}
 	entities["dialogueEntity"] = &manager.addEntity();
-	entities["fire"] = &manager.addEntity();
+	entities[fire] = &manager.addEntity();
 	entities["bed"] = &manager.addEntity();
 	entities["cabinet"] = &manager.addEntity();
 
 
-	entities["fire"]->addComponent<TransformComponent>(1250, 0, 64, 32, scale);
-	entities["fire"]->addComponent<ColliderComponent>("fireplace");
-	entities["fire"]->addComponent<InteractiveComponent>("The fire is almost out. It needs some wood.");
+	entities[fire]->addComponent<TransformComponent>(1250, 0, 64, 32, scale);
+	entities[fire]->addComponent<ColliderComponent>("fireplace");
+	entities[fire]->addComponent<InteractiveComponent>("The fire is almost out. It needs some wood.");
 	std::vector<int> animationIndexFrame{ 7 };  //animations, frames
-	entities["fire"]->addComponent<SpriteComponent>("fireplace", true, animationIndexFrame);
-	entities["fire"]->addComponent<KeyboardController>();
-	entities["fire"]->addGroup(Game::groupTerrainColliders);
-	entities["fire"]->addGroup(Game::groupInteractiveObjects);
+	entities[fire]->addComponent<SpriteComponent>(fireplace, true, animationIndexFrame);
+	entities[fire]->addComponent<KeyboardController>();
+	entities[fire]->addGroup(Game::groupTerrainColliders);
+	entities[fire]->addGroup(Game::groupInteractiveObjects);
 	
 	addInteractiveObject(*entities["bed"], 1500, 100, 50, 32, scale, "bed", "You are well rested already.");
 	addInteractiveObject(*entities["cabinet"], 1020, 10, 52, 31, scale, "cabinet", "It is locked. Don't you remember locking it?");
@@ -314,7 +321,7 @@ void Game::clean()
 
 void clearMap()
 {
-	std::unordered_map<std::string, Entity*>::iterator itr = entities.begin();
+	/*std::unordered_map<std::string, Entity*>::iterator itr = entities.begin();
 	while (itr != entities.end()) {
 		if (itr->first != "player" && itr->first != "dialogueEntity") {
 			itr->second->destroy();
@@ -324,7 +331,7 @@ void clearMap()
 			++itr;
 		}
 	}
-
+	*/
 	for (auto& t : tiles)
 	{
 		//t->destroy();
