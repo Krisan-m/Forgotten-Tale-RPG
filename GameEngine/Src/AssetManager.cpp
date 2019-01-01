@@ -22,6 +22,9 @@ void AssetManager::CreateDialogue(Vector2D pos, std::string id, Entity& dialogue
 
 void AssetManager::AddTexture(std::string id, const char* path)
 {
+	if (textures.find(id) != textures.end()) {
+		textures.erase(id);
+	}
 	textures.emplace(id, TextureManager::LoadTexture(path));
 }
 
