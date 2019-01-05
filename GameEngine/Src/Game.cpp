@@ -95,12 +95,16 @@ void setupMapOne()
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
 
-	Game::assets->AddTexture("dialogue", "assets/DialogueBackground.png");
+	if (entities.find("fire") == entities.end()) {
+		Game::assets->AddTexture("dialogue", "assets/DialogueBackground.png");
+		entities["dialogueEntity"] = &manager.addEntity();
+		Game::assets->CreateDialogue(Vector2D(screenX / 2 - 290, 450), "dialogue", *entities["dialogueEntity"], "You have awoken from a deep slumber.");
+	}
+
 	Game::assets->AddTexture("fireplace", "assets/fireplace_spritesheet.png");
 	Game::assets->AddTexture("bed", "assets/bed.png");
 	Game::assets->AddTexture("cabinet", "assets/cabinet.png");
 
-	entities["dialogueEntity"] = &manager.addEntity();
 	entities["fire"] = &manager.addEntity();
 	entities["bed"] = &manager.addEntity();
 	entities["cabinet"] = &manager.addEntity();
@@ -117,8 +121,6 @@ void setupMapOne()
 	
 	addInteractiveObject(*entities["bed"], 1500, 100, 50, 32, scale, "bed", "You are well rested already.");
 	addInteractiveObject(*entities["cabinet"], 1020, 10, 52, 31, scale, "cabinet", "It is locked. Don't you remember locking it?");
-
-	Game::assets->CreateDialogue(Vector2D(screenX / 2 - 290, 450), "dialogue", *entities["dialogueEntity"], "You have awoken from a deep slumber.");
 }
 
 void setupMapTwo() 
