@@ -53,7 +53,6 @@ void addTextures()
 {
 	// Add textures/fonts
 	Game::assets->AddTexture("player", "assets/character_spritesheet.png");
-	Game::assets->AddTexture("terrain", "assets/room_1_tileset.png");
 	Game::assets->AddTexture("dialogue", "assets/DialogueBackground.png");
 	Game::assets->AddFont("Determination", "assets/Determination.ttf", 32);
 	Game::assets->AddTexture("startScreen", "assets/StartScreen.png");
@@ -61,7 +60,6 @@ void addTextures()
 	Game::assets->AddTexture("fireplace1", "assets/fireplace_spritesheet.png");
 	Game::assets->AddTexture("bed", "assets/bed.png");
 	Game::assets->AddTexture("cabinet", "assets/cabinet.png");
-	Game::assets->AddTexture("terrain2", "assets/corridor_2_tileset.png");
 
 }
 
@@ -90,7 +88,7 @@ void setupMapOne()
 {
 	entities["player"]->getComponent<TransformComponent>().position.x = 1250;
 	entities["player"]->getComponent<TransformComponent>().position.y = 250;
-	
+	Game::assets->AddTexture("terrain", "assets/room_1_tileset.png");
 	clearMap();
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
@@ -127,6 +125,7 @@ void setupMapTwo()
 {
 	entities["player"]->getComponent<TransformComponent>().position.x = 300;
 	entities["player"]->getComponent<TransformComponent>().position.y = 250;
+	Game::assets->AddTexture("terrain2", "assets/corridor_2_tileset.png");
 
 	clearMap();
 	map = new Map("terrain2", scale, 16);
@@ -335,7 +334,7 @@ void clearMap()
 	*/
 	for (auto& t : tiles)
 	{
-		//t->destroy();
+		t->destroy();
 	}
 	for (auto& c : terrainColliders)
 	{
