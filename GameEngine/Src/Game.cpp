@@ -123,13 +123,13 @@ void setupMapOne()
 
 void setupMapTwo() 
 {
-	entities["player"]->getComponent<TransformComponent>().position.x = 300;
-	entities["player"]->getComponent<TransformComponent>().position.y = 250;
-	Game::assets->AddTexture("terrain2", "assets/corridor_2_tileset.png");
+	entities["player"]->getComponent<TransformComponent>().position.x = 285;
+	entities["player"]->getComponent<TransformComponent>().position.y = 350;
+	Game::assets->AddTexture("terrain2", "assets/forest_1_tileset.png");
 
 	clearMap();
 	map = new Map("terrain2", scale, 16);
-	map->LoadMap("assets/corridor_2.map", 60, 40);
+	map->LoadMap("assets/forest_1_map.map", 20, 15);
 }
 
 void Game::init(const char* title, int width, int height, bool fullscreen)
