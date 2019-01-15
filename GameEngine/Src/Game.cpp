@@ -87,13 +87,15 @@ void setupStartScreen()
 void setupMapOne()
 {
 	entities["player"]->getComponent<TransformComponent>().position.x = 1250;
-	entities["player"]->getComponent<TransformComponent>().position.y = 250;
+	entities["player"]->getComponent<TransformComponent>().position.y = 440;
 	Game::assets->AddTexture("terrain", "assets/room_1_tileset.png");
 	clearMap();
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
 
 	if (entities.find("fire") == entities.end()) {
+		entities["player"]->getComponent<TransformComponent>().position.x = 1250;
+		entities["player"]->getComponent<TransformComponent>().position.y = 250;
 		Game::assets->AddTexture("dialogue", "assets/DialogueBackground.png");
 		entities["dialogueEntity"] = &manager.addEntity();
 		Game::assets->CreateDialogue(Vector2D(screenX / 2 - 290, 450), "dialogue", *entities["dialogueEntity"], "You have awoken from a deep slumber.");
@@ -123,8 +125,8 @@ void setupMapOne()
 
 void setupMapTwo() 
 {
-	entities["player"]->getComponent<TransformComponent>().position.x = 285;
-	entities["player"]->getComponent<TransformComponent>().position.y = 350;
+	entities["player"]->getComponent<TransformComponent>().position.x = 425;
+	entities["player"]->getComponent<TransformComponent>().position.y = 300;
 	Game::assets->AddTexture("terrain2", "assets/forest_1_tileset.png");
 
 	clearMap();
