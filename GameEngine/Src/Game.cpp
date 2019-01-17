@@ -16,6 +16,8 @@ SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 int screenX = 800;
 int screenY = 640;
+int mapX = 800;
+int mapY = 640;
 int scale = 3;
 SDL_Rect Game::camera = {0, 0, screenX, screenY}; //width and height of camera
 
@@ -92,6 +94,8 @@ void setupMapOne()
 	clearMap();
 	map = new Map("terrain", scale, 16);
 	map->LoadMap("assets/room_1.map", 50, 40);
+	mapX = 50 * 16 * scale;
+	mapY = 40 * 16 * scale;
 
 	if (entities.find("fire") == entities.end()) {
 		entities["player"]->getComponent<TransformComponent>().position.x = 1250;
@@ -132,6 +136,8 @@ void setupMapTwo()
 	clearMap();
 	map = new Map("terrain2", scale, 16);
 	map->LoadMap("assets/forest_1_map.map", 20, 15);
+	mapX = 20 * 16 * scale;
+	mapY = 15 * 16 * scale;
 }
 
 void Game::init(const char* title, int width, int height, bool fullscreen)
@@ -200,11 +206,9 @@ void Game::update()
 
 	if (entities["dialogueEntity"]->isConnected()) {
 		entities["player"]->getComponent<KeyboardController>().receiveInput = false;
-		//player.disconnect();
 	}
 	else {
 		entities["player"]->getComponent<KeyboardController>().receiveInput = true;
-		//player.connect();
 	}
 
 	manager.refresh();
@@ -270,6 +274,11 @@ void Game::update()
 		camera.x = screenX * scale - screenX;
 	if (camera.y > screenY * scale - screenY)
 		camera.y = screenY * scale - screenY;
+
+	if (camera.x > mapX - screenX)
+		camera.x = mapX - screenX;
+	if (camera.y > mapY - screenY)
+		camera.y = mapY - screenY;
 }
 
 void Game::render()
@@ -323,17 +332,6 @@ void Game::clean()
 
 void clearMap()
 {
-	/*std::unordered_map<std::string, Entity*>::iterator itr = entities.begin();
-	while (itr != entities.end()) {
-		if (itr->first != "player" && itr->first != "dialogueEntity") {
-			itr->second->destroy();
-			itr = entities.erase(itr);
-		}
-		else {
-			++itr;
-		}
-	}
-	*/
 	for (auto& t : tiles)
 	{
 		t->destroy();
