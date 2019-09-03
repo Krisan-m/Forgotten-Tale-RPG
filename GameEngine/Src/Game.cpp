@@ -32,11 +32,6 @@ Game::Game()
 Game::~Game()
 {}
 
-bool Game::inStartMenu() 
-{
-	return inStart;
-}
-
 void addInteractiveObject(Entity& e, int xpos, int ypos, int height, int width, int scale, std::string id, std::string dialogue) 
 {
 	e.addComponent<TransformComponent>(xpos, ypos, height, width, scale);

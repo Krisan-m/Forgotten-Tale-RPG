@@ -19,7 +19,7 @@ public:
 	bool running() { return isRunning; }
 	void render();
 	void clean();
-	bool inStartMenu();
+	bool inStartMenu() { return inStart; }
 
 	static SDL_Renderer *renderer;
 	static SDL_Event event;
