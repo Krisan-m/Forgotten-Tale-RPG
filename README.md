@@ -4,7 +4,6 @@
 ![Forgotten Tale](/docs/ForgottenPlaceImage.png?raw=true "Forgotten Tale")
 
 ## Development Information
-**In active development**
 
 Coded in C++
 
